@@ -65,6 +65,19 @@ async def on_comment(event: CommentEvent) -> None:
     print(f"[TikTok] {event.user.nickname}: {event.comment}")
 
 async def check_loop():
+    ## Prep
+    
+    # [TikTok] Enable download info
+    print(f'[TikTok] Enabling download info')
+    tiktokClient.logger.setLevel(LogLevel.INFO.value)
+    print(f'[TikTok] Enabled download info')
+
+    # [TikTok] Set the login session ID token BEFORE connecting
+    print(f'[TikTok] Setting login session ID')
+    tiktokClient.web.set_session_id(config.session_id)
+    print(f'[TikTok] Set login session ID')
+
+    print(f'[TikTok] Connecting...')
     # Run 24/7
     while True:
 
@@ -248,24 +261,12 @@ async def main():
                 
                 
                 
-    ## Prep
-    
-    # [TikTok] Enable download info
-    print(f'[TikTok] Enabling download info')
-    tiktokClient.logger.setLevel(LogLevel.INFO.value)
-    print(f'[TikTok] Enabled download info')
 
-    # [TikTok] Set the login session ID token BEFORE connecting
-    print(f'[TikTok] Setting login session ID')
-    tiktokClient.web.set_session_id(config.session_id)
-    print(f'[TikTok] Set login session ID')
-
-    print(f'[TikTok] Connecting...')
     TwitchBot = Bot()
     
     ## Init
 
-    await asyncio.gather(TwitchBot.start(), check_loop())
+    await asyncio.gather(TwitchBot.start())
 asyncio.run(main())
 # bot.run() is blocking and will stop execution of any below code here until stopped or closed.
 
