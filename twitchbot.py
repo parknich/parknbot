@@ -257,7 +257,7 @@ async def main():
 
     # [TikTok] Set the login session ID token BEFORE connecting
     print(f'[TikTok] Setting login session ID')
-    tiktokClient.web.set_session_id("cc51889e0ce13595bdc570ddadaf35f5")
+    tiktokClient.web.set_session_id(config.session_id)
     print(f'[TikTok] Set login session ID')
 
     print(f'[TikTok] Connecting...')

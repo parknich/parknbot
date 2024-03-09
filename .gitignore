@@ -1,3 +1,4 @@
 config.py
 tests/
 __pycache__/
+chat.log
