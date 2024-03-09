@@ -181,7 +181,7 @@ async def main():
                 else:
                     await ctx.send(f'Error 4: @{ctx.author.display_name} already in queue list')
             elif args[0] == f'next':
-                if ctx.author.is_mod or ctx.author.is_broadcaster or ctx.author.display_name == f'parknich':
+                if ctx.author.is_mod or ctx.author.is_broadcaster:
                     if queueList:
                         removed_user = queueList.pop(0)
                     else:
@@ -199,7 +199,7 @@ async def main():
                 else:
                     await ctx.send("Error 3: Insufficient permissions")
             elif args[0] == f'remove':
-                if ctx.author.is_mod or ctx.author.is_broadcaster or ctx.author.display_name == f'parknich':
+                if ctx.author.is_mod or ctx.author.is_broadcaster:
                     if queueList:
                         if args[1] in queueList:
                             queueList.pop(queueList.index(f'{args[1]}'))
@@ -213,7 +213,7 @@ async def main():
                     await ctx.send("Error 3: Insufficient permissions")
             elif args[0] == f'add':
                 try:
-                    if ctx.author.is_mod or ctx.author.is_broadcaster or ctx.author.display_name == f'parknich':
+                    if ctx.author.is_mod or ctx.author.is_broadcaster:
                             if args[1] in queueList:
                                 await ctx.send(f'The user is already in the queue')
                                 return
@@ -225,7 +225,7 @@ async def main():
                 except IndexError:
                     await ctx.send(f'Error 2: Missing argument')
             elif args[0] == f'clear':
-                if ctx.author.is_mod or ctx.author.is_broadcaster or ctx.author.display_name == f'parknich':
+                if ctx.author.is_mod or ctx.author.is_broadcaster:
                     if queueList:
                         for user in queueList:
                             queueList.pop(0)
