@@ -271,7 +271,7 @@ async def main():
     
     ## Init
 
-    await asyncio.gather(TwitchBot.start(), check_loop)
+    await asyncio.gather(TwitchBot.start(), check_loop())
 asyncio.run(main())
 # bot.run() is blocking and will stop execution of any below code here until stopped or closed.
 
