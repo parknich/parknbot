@@ -1,0 +1,1 @@
+../parknBotVENV/bin/python3 -m flask --app flaskr run --debug --port 8001 --host=0.0.0.0
