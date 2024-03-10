@@ -12,7 +12,7 @@ bp = Blueprint('queue', __name__)
 global_users = ['No users in queue']
 
 @login_required
-@bp.route('/dash/queue', methods=('GET', 'POST'))
+@bp.route('/dash/obs/queue', methods=('GET', 'POST'))
 def queue():
     global global_users
 
@@ -22,10 +22,15 @@ def queue():
         print(users1)
 
         # Update the global variable with the received data
-        global_users = users1
-
+        
+        if not global_users:
+            global_users = ['No users in queue']
+        else:
+            global_users = users1
+            
         for user in global_users:
             print(user)
+
         # Process the users list as needed (store in the database, etc.)
 
     if request.method == 'GET' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -33,4 +38,4 @@ def queue():
         return jsonify(users=global_users)
 
     db = get_db()
-    return render_template('dash/queue.html', users=global_users)
+    return render_template('dash/obs/queue.html', users=global_users)
