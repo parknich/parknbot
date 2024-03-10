@@ -23,10 +23,7 @@ def queue():
 
         # Update the global variable with the received data
         
-        if not global_users:
-            global_users = ['No users in queue']
-        else:
-            global_users = users1
+        global_users = users1
             
         for user in global_users:
             print(user)
