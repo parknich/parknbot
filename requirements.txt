@@ -2,3 +2,4 @@ Requests
 TikTokLive
 TikTokLive
 twitchio
+flask

@@ -1,0 +1,33 @@
+/* Style for header block */
+header {
+    text-align: center;
+    background-color: #2c3e50; /* Clean blue-gray background color */
+    color: #ecf0f1; /* Clean light text color for contrast */
+    padding: 10px;
+    border-top-left-radius: 10px; /* Rounded corners */
+    border-top-right-radius: 10px;
+    font-size: 34px; /* Set the font size for the header */
+  }
+  
+  /* Style for content block */
+  .content {
+    margin: 20px auto; /* Center the box */
+    padding: 10px; /* Adjust the padding */
+    font-size: 18px; /* Set your desired font size for the box */
+    color: #ecf0f1; /* White text color */
+    border: 3px solid #ecf0f1; /* Increased border width and white color for contrast */
+    background-color: #2c3e50; /* Clean blue-gray background color */
+    width: 300px; /* Set your desired fixed width */
+    height: auto; /* Allow the height to adjust based on content */
+    border-bottom-left-radius: 10px; /* Rounded corners */
+    border-bottom-right-radius: 10px;
+    box-sizing: border-box; /* Include padding and border in the box's total width and height */
+    overflow: hidden; /* Ensure rounded corners are visible */
+    text-align: center; /* Center text within the content block */
+  }
+  
+  /* Style for text within content block */
+  .content p {
+    font-size: 24px; /* Set your desired larger font size for the users */
+  }
+  

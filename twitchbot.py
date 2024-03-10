@@ -5,7 +5,9 @@ from twitchio.user import User
 from TikTokLive import TikTokLiveClient
 from TikTokLive.events import ConnectEvent, CommentEvent
 from TikTokLive.client.logger import LogLevel
+import requests
 import config
+
 debug = True
 
 # Create the twitch client
@@ -30,15 +32,26 @@ def splitArgs(input_string):
         return None  # Handle the case where the string is empty
 
 
+async def update_queue_list():
+    # Send a POST request with the current queueList as a JSON array to the specified endpoint
+    endpoint = 'http://127.0.0.1:8001/dash/queue'
+    payload = {'users': queueList}
+    try:
+        response = requests.post(endpoint, json=payload)
+        response.raise_for_status()  # Raise an HTTPError for bad responses
+        print(f'{[payload]}')
+        print(f"QueueList updated successfully: {response.status_code}")
+    except requests.exceptions.RequestException as e:
+        print(f"Failed to update QueueList: {e}")
 ## WIP
 ## TODO: Use JSON format
 # def savecommand(tupargs, file='savedcommands.info'):
-    command, permission, result = tupargs
-    print(tupargs)
-    print(command)
-    print(permission)
-    with open(file, 'a') as of:
-        of.write('{' + '\n' + 'command: ' + command + '\n' + 'permission: ' + permission + '\n' + 'result: ' + result + '\n' + '}')
+#    command, permission, result = tupargs
+#    print(tupargs)
+#    print(command)
+#    print(permission)
+#    with open(file, 'a') as of:
+#        of.write('{' + '\n' + 'command: ' + command + '\n' + 'permission: ' + permission + '\n' + 'result: ' + result + '\n' + '}')
 
 def log(input, log_file='chat.log'):
     print(input)
@@ -52,17 +65,13 @@ usersList = list()
 
 # Create the client
 tiktokClient: TikTokLiveClient = TikTokLiveClient(unique_id="@hubalubalu")
-tiktokClient2: TikTokLiveClient = TikTokLiveClient(unique_id="@hubalubalu")
 print(f'[TikTok] Created the tiktok client')
 
 # Listen to an event with a decorator!
-@tiktokClient2.on(ConnectEvent)
-async def on_connect(event: ConnectEvent):
-    print(f"[TikTok] Connected to @{event.unique_id} (Room ID: {tiktokClient.room_id})")
-
 @tiktokClient.on(ConnectEvent)
 async def on_connect(event: ConnectEvent):
     print(f"[TikTok] Connected to @{event.unique_id} (Room ID: {tiktokClient.room_id})")
+
 
 @tiktokClient.on(CommentEvent)
 async def on_comment(event: CommentEvent) -> None:
@@ -73,7 +82,6 @@ async def check_loop():
     
     # [TikTok] Enable download info
     print(f'[TikTok] Enabling download info')
-    tiktokClient2.logger.setLevel(LogLevel.INFO.value)
     tiktokClient.logger.setLevel(LogLevel.INFO.value)
     print(f'[TikTok] Enabled download info')
 
@@ -83,16 +91,18 @@ async def check_loop():
     print(f'[TikTok] Set login session ID')
 
     print(f'[TikTok] Connecting...')
+    tiktok_is_live = False
     # Run 24/7
-    while True:
+    while not tiktok_is_live:
 
         # Check if they're live
-        while not await tiktokClient2.is_live():
-            tiktokClient2.logger.info("Client is currently not live. Checking again in 60 seconds.")
+        while not await tiktokClient.is_live():
+            tiktokClient.logger.info("Client is currently not live. Checking again in 60 seconds.")
             await asyncio.sleep(60)  # Spamming the endpoint will get you blocked
 
         # Connect once they become live
-        tiktokClient2.logger.info("Requested client is live!")
+        tiktok_is_live = True
+        tiktokClient.logger.info("Requested client is live!")
         await tiktokClient.start()
 
 async def main():
@@ -194,6 +204,7 @@ async def main():
                     try:
                         queueList.append(ctx.author.display_name)
                         await ctx.send(f"@{ctx.author.display_name}, you've been added to the queue!")
+                        await update_queue_list()  # Call the function to update the queueList
                     except Exception:
                         await ctx.send(f'Unknown error')
                 else:
@@ -202,6 +213,7 @@ async def main():
                 if ctx.author.is_mod or ctx.author.is_broadcaster:
                     if queueList:
                         removed_user = queueList.pop(0)
+                        await update_queue_list()  # Call the function to update the queueList
                     else:
                         await ctx.send(f'The queue is empty.')
                         return
@@ -221,6 +233,7 @@ async def main():
                     if queueList:
                         if args[1] in queueList:
                             queueList.pop(queueList.index(f'{args[1]}'))
+                            await update_queue_list()  # Call the function to update the queueList
                         else:
                             await ctx.send(f'The specified user is not in the queue')
                             return
@@ -237,6 +250,7 @@ async def main():
                                 return
                             else:
                                 queueList.append(args[1])
+                                await update_queue_list()  # Call the function to update the queueList
                                 await ctx.send(f'Added {args[1]} to the queue')
                     else:
                         await ctx.send("Error 3: Insufficient permissions")
@@ -247,7 +261,9 @@ async def main():
                     if queueList:
                         for user in queueList:
                             queueList.pop(0)
+                            
                         await ctx.send(f'Cleared queue')
+                        await update_queue_list()  # Call the function to update the queueList
                 else:
                     await ctx.send("Error 3: Insufficient permissions")
             else:
@@ -271,7 +287,7 @@ async def main():
     
     ## Init
 
-    await asyncio.gather(TwitchBot.start(), check_loop())
+    await asyncio.gather(TwitchBot.start())
 asyncio.run(main())
 # bot.run() is blocking and will stop execution of any below code here until stopped or closed.
 
