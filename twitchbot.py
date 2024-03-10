@@ -52,13 +52,17 @@ usersList = list()
 
 # Create the client
 tiktokClient: TikTokLiveClient = TikTokLiveClient(unique_id="@hubalubalu")
+tiktokClient2: TikTokLiveClient = TikTokLiveClient(unique_id="@hubalubalu")
 print(f'[TikTok] Created the tiktok client')
 
 # Listen to an event with a decorator!
-@tiktokClient.on(ConnectEvent)
+@tiktokClient2.on(ConnectEvent)
 async def on_connect(event: ConnectEvent):
     print(f"[TikTok] Connected to @{event.unique_id} (Room ID: {tiktokClient.room_id})")
 
+@tiktokClient.on(ConnectEvent)
+async def on_connect(event: ConnectEvent):
+    print(f"[TikTok] Connected to @{event.unique_id} (Room ID: {tiktokClient.room_id})")
 
 @tiktokClient.on(CommentEvent)
 async def on_comment(event: CommentEvent) -> None:
@@ -69,6 +73,7 @@ async def check_loop():
     
     # [TikTok] Enable download info
     print(f'[TikTok] Enabling download info')
+    tiktokClient2.logger.setLevel(LogLevel.INFO.value)
     tiktokClient.logger.setLevel(LogLevel.INFO.value)
     print(f'[TikTok] Enabled download info')
 
@@ -82,12 +87,12 @@ async def check_loop():
     while True:
 
         # Check if they're live
-        while not await tiktokClient.is_live():
-            tiktokClient.logger.info("Client is currently not live. Checking again in 60 seconds.")
+        while not await tiktokClient2.is_live():
+            tiktokClient2.logger.info("Client is currently not live. Checking again in 60 seconds.")
             await asyncio.sleep(60)  # Spamming the endpoint will get you blocked
 
         # Connect once they become live
-        tiktokClient.logger.info("Requested client is live!")
+        tiktokClient2.logger.info("Requested client is live!")
         await tiktokClient.start()
 
 async def main():
