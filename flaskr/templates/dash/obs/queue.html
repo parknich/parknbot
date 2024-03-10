@@ -15,7 +15,7 @@
     function updateUserList() {
       // Make an AJAX request to get the updated user list
       $.ajax({
-        url: '/dash/queue',
+        url: '/dash/obs/queue',
         method: 'GET',  // You might need to change this to 'POST' depending on your application
         dataType: 'json',
         success: function(response) {
