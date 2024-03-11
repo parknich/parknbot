@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="{{ url_for('static', filename='boxresponses.css') }}">
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<section class="content">
+  <header>
+    <title>{% block title %}{% endblock %} - parknBot</title>
+    {% block header %}parknBot:{% endblock %}
+  </header>
+
+  {% block content %}
+  <p id="response">
+  </p>
+  <script>
+    function updateUserList() {
+      // Make an AJAX request to get the updated user list
+      $.ajax({
+        url: '/dash/obs/responses',
+        method: 'GET',  // You might need to change this to 'POST' depending on your application
+        dataType: 'json',
+        success: function(response) {
+          // Update the user list on the page
+          $('#response').html(response.response.join('<br>'));
+        },
+        error: function(error) {
+          console.error('Error updating user list:', error);
+        }
+      });
+    }
+
+    // Call the function initially
+    updateUserList();
+
+    // You might want to set up a timer to periodically update the user list
+    setInterval(updateUserList, 1000);  // Update every 5 seconds, for example
+  </script>
+  {% endblock %}
+</section>
