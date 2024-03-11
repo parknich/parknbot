@@ -103,7 +103,11 @@ async def check_loop():
         # Connect once they become live
         tiktok_is_live = True
         tiktokClient.logger.info("Requested client is live!")
-        await tiktokClient.start()
+        try:
+            await tiktokClient.start()
+        except Exception:
+            print('Failed to connect to TikTokLive')
+            return
 
 async def main():
     class Bot(commands.Bot):
@@ -288,7 +292,7 @@ async def main():
     
     ## Init
 
-    await asyncio.gather(TwitchBot.start())
+    await asyncio.gather(TwitchBot.start(), check_loop())
 asyncio.run(main())
 # bot.run() is blocking and will stop execution of any below code here until stopped or closed.
 
