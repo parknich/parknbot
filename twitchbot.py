@@ -76,10 +76,12 @@ async def on_connect(event: ConnectEvent):
 @tiktokClient.on(CommentEvent)
 async def on_comment(event: CommentEvent) -> None:
     print(f"[TikTok] {event.user.nickname}: {event.comment}")
-    if event.comment == "queue join":
+    if event.comment == "?queue join":
         queueList.append(event.user.nickname)
-    if event.comment == "queue leave":
+        await update_queue_list()
+    if event.comment == "?queue leave":
         queueList.pop(queueList.index(f'{event.user.nickname}'))
+        await update_queue_list()
 
 async def check_loop():
     ## Prep
