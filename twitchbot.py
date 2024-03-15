@@ -250,7 +250,7 @@ async def main():
                 if ctx.author.is_mod or ctx.author.is_broadcaster:
                     if queueList:
                         if args[1] in queueList:
-                            await ctx.send('Removed ' + queueList.index(f'{args[1]}') + ' from queue')
+                            await ctx.send('Removed ' + args[1] + ' from queue')
                             queueList.pop(queueList.index(f'{args[1]}'))
                             await update_queue_list()  # Call the function to update the queueList
                         else:
