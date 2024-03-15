@@ -108,8 +108,9 @@ async def check_loop():
 
         # Connect once they become live
         tiktok_is_live = True
-        tiktokClient.logger.info("Requested client is live!")
+        
         if not connected:
+            tiktokClient.logger.info("Requested client is live!, connecting")
             try:
                 await tiktokClient.start()
                 connected = True
