@@ -119,7 +119,7 @@ async def check_loop():
                 return
         else:
             connected = True
-        asyncio.sleep(60)
+        await asyncio.sleep(60)
         
 
 
