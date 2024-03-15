@@ -23,11 +23,16 @@ def queue():
         print(users1)
 
         # Update the global variable with the received data
-        
-        global_users = users1
+        if not users1:
+            users1=['No users in queue']
+            global_users = users1
+        else:   
+            global_users = users1
             
         for user in global_users:
             print(user)
+            
+        
 
         # Process the users list as needed (store in the database, etc.)
 
@@ -35,6 +40,7 @@ def queue():
         print(global_users)
         return jsonify(users=global_users)
 
+    
     db = get_db()
     return render_template('dash/obs/queue.html', users=global_users)
 

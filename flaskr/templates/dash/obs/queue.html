@@ -7,7 +7,9 @@
     <title>{% block title %}{% endblock %} - parknBot</title>
     {% block header %}Users in queue:{% endblock %}
   </header>
-
+  <p id="ingame">
+    In-Game
+  </p>
   {% block content %}
   <p id="user-list">
   </p>
@@ -15,18 +17,22 @@
     function updateUserList() {
       // Make an AJAX request to get the updated user list
       $.ajax({
-        url: '/dash/obs/queue',
-        method: 'GET',  // You might need to change this to 'POST' depending on your application
-        dataType: 'json',
-        success: function(response) {
-          // Update the user list on the page
-          $('#user-list').html(response.users.join('<br>'));
-        },
-        error: function(error) {
-          console.error('Error updating user list:', error);
-        }
+          url: '/dash/obs/queue',
+          method: 'GET',
+          dataType: 'json',
+          success: function(response) {
+              // Separate users above and below the line
+              var usersAboveLine = response.users.slice(0, 3); // Assuming first 3 users are above the line
+              var usersBelowLine = response.users.slice(3);
+  
+              // Update the user list on the page
+              $('#user-list').html(usersAboveLine.join('<br>') + '<hr>' + usersBelowLine.join('<br>'));
+          },
+          error: function(error) {
+              console.error('Error updating user list:', error);
+          }
       });
-    }
+  }
 
     // Call the function initially
     updateUserList();

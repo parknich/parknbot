@@ -7,6 +7,7 @@ from TikTokLive.events import ConnectEvent, CommentEvent
 from TikTokLive.client.logger import LogLevel
 import requests
 import config
+import httpx
 #TODO: Make it so the first 4 people in queue are considered to be playing, then make it dynamically adjustable via a command
 debug = True
 
@@ -101,12 +102,26 @@ async def check_loop():
     connected = False
     # Run 24/7
     while True:
-
-        # Check if they're live
-        while not await tiktokClient.is_live():
-            tiktokClient.logger.info("Client is currently not live. Checking again in 60 seconds.")
-            connected=False
-            await asyncio.sleep(60)  # Spamming the endpoint will get you blocked
+        try:
+            # Check if they're live
+            while not await tiktokClient.is_live():
+                tiktokClient.logger.info("Client is currently not live. Checking again in 60 seconds.")
+                connected=False
+                await asyncio.sleep(60)  # Spamming the endpoint will get you blocked
+        except httpx.HTTPError as e:
+            # Handle HTTP errors
+            print(f"HTTP error occurred: {e}")
+        except httpx.Request as e:
+            # Handle request-related errors (e.g., network issues)
+            print(f"Request error occurred: {e}")
+        except httpx.Timeout as e:
+            # Handle timeout errors
+            print(f"Request timeout occurred: {e}")
+        except Exception as e:
+            # Catch any other exceptions
+            print(f"An unexpected error occurred: {e}")
+            
+            
 
         # Connect once they become live
         tiktok_is_live = True
