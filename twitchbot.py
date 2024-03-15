@@ -64,7 +64,7 @@ usersList = list()
       
 
 # Create the client
-tiktokClient: TikTokLiveClient = TikTokLiveClient(unique_id="@hubalubalu")
+tiktokClient: TikTokLiveClient = TikTokLiveClient(unique_id="@hubalubalu") 
 print(f'[TikTok] Created the tiktok client')
 
 # Listen to an event with a decorator!
@@ -76,6 +76,10 @@ async def on_connect(event: ConnectEvent):
 @tiktokClient.on(CommentEvent)
 async def on_comment(event: CommentEvent) -> None:
     print(f"[TikTok] {event.user.nickname}: {event.comment}")
+    if event.comment == "queue join":
+        queueList.append(event.user.nickname)
+    if event.comment == "queue leave":
+        queueList.pop(queueList.index(f'{event.user.nickname}'))
 
 async def check_loop():
     ## Prep
@@ -91,23 +95,31 @@ async def check_loop():
     print(f'[TikTok] Set login session ID')
 
     print(f'[TikTok] Connecting...')
-    tiktok_is_live = False
+    a = False
+    connected = False
     # Run 24/7
-    while not tiktok_is_live:
+    while True:
 
         # Check if they're live
         while not await tiktokClient.is_live():
             tiktokClient.logger.info("Client is currently not live. Checking again in 60 seconds.")
+            connected=False
             await asyncio.sleep(60)  # Spamming the endpoint will get you blocked
 
         # Connect once they become live
         tiktok_is_live = True
         tiktokClient.logger.info("Requested client is live!")
-        try:
-            await tiktokClient.start()
-        except Exception:
-            print('Failed to connect to TikTokLive')
-            return
+        if not connected:
+            try:
+                await tiktokClient.start()
+                connected = True
+            except Exception:
+                print('Failed to connect to TikTokLive')
+                return
+        else:
+            connected = True
+        
+
 
 async def main():
     class Bot(commands.Bot):
