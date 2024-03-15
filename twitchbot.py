@@ -116,6 +116,7 @@ async def check_loop():
                 connected = True
             except Exception:
                 print('Failed to connect to TikTokLive')
+                connected = False
                 return
         else:
             connected = True
