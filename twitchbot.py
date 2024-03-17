@@ -295,10 +295,16 @@ async def main():
                     await ctx.send(f'Error 2: Missing argument')
             elif args[0] == f'clear':
                 if ctx.author.is_mod or ctx.author.is_broadcaster:
+                    usersCleared = bool()
                     if queueList:
-                        for user in queueList:
-                            queueList.pop(0)
-                            
+                        while not usersCleared:
+                            for user in queueList:
+                                queueList.pop(0)
+                                if not queueList:
+                                    usersCleared = True
+                                    
+                                asyncio.sleep(0.050)
+                                
                         await ctx.send(f'Cleared queue')
                         await update_queue_list()  # Call the function to update the queueList
                 else:
