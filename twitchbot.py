@@ -282,7 +282,7 @@ async def main():
             elif args[0] == f'leave':
                 if queueList:
                     if ctx.author.display_name in queueList:
-                        await ctx.send('Removed ' + args[1] + ' from queue')
+                        await ctx.send('Removed ' + ctx.author.display_name + ' from queue')
                         queueList.pop(queueList.index(f'{ctx.author.display_name}'))
                         await update_queue_list()  # Call the function to update the queueList
                     else:
