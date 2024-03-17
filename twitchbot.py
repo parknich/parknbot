@@ -281,7 +281,7 @@ async def main():
                     await ctx.send("Error 3: Insufficient permissions")
             elif args[0] == f'leave':
                 if queueList:
-                    if args[1] in queueList:
+                    if ctx.author.display_name in queueList:
                         await ctx.send('Removed ' + args[1] + ' from queue')
                         queueList.pop(queueList.index(f'{ctx.author.display_name}'))
                         await update_queue_list()  # Call the function to update the queueList
