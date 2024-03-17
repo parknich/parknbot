@@ -279,6 +279,18 @@ async def main():
                         return
                 else:
                     await ctx.send("Error 3: Insufficient permissions")
+            elif args[0] == f'leave':
+                if queueList:
+                    if args[1] in queueList:
+                        await ctx.send('Removed ' + args[1] + ' from queue')
+                        queueList.pop(queueList.index(f'{ctx.author.display_name}'))
+                        await update_queue_list()  # Call the function to update the queueList
+                    else:
+                        await ctx.send(f'The specified user is not in the queue')
+                        return
+                else:
+                    await ctx.send(f'The queue is empty.')
+                    return
             elif args[0] == f'add':
                 try:
                     if ctx.author.is_mod or ctx.author.is_broadcaster:
