@@ -9,31 +9,34 @@
   </p>
   {% block content %}
   <p id="user-list">
-
+  </p>
   <p id="inqueue">
     In-Queue
-  </p>
   </p>
   <script>
     function updateUserList() {
       // Make an AJAX request to get the updated user list
       $.ajax({
-          url: '/dash/obs/queue',
-          method: 'GET',
-          dataType: 'json',
-          success: function(response) {
-              // Separate users above and below the line
-              var usersAboveLine = response.users.slice(0, 3); // Assuming first 3 users are above the line
-              var usersBelowLine = response.users.slice(3);
-  
-              // Update the user list on the page
-              $('#user-list').html(usersAboveLine.join('<br>') + '<hr>' + usersBelowLine.join('<br>'));
-          },
-          error: function(error) {
-              console.error('Error updating user list:', error);
+        url: '/dash/obs/queue',
+        method: 'GET',
+        dataType: 'json',
+        success: function(response) {
+          var users = response.users;
+          var userListHTML = '';
+
+          // Iterate over the users and add ordered numbers
+          for (var i = 0; i < users.length; i++) {
+            userListHTML += (i + 1) + '. ' + users[i] + '<br>'; // Add ordered number and user
           }
+
+          // Update the user list on the page
+          $('#user-list').html(userListHTML);
+        },
+        error: function(error) {
+          console.error('Error updating user list:', error);
+        }
       });
-  }
+    }
 
     // Call the function initially
     updateUserList();
