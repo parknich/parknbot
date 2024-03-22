@@ -255,14 +255,16 @@ async def main():
                     await ctx.send("No users in queue.")
             elif args[0] == "test":
                 print(userSlots)
+                print(globalUserSlots)
             elif args[0] == f"set":
                 try:
                     if args[1] == f"userSlots":
                         print(args[2])
                         print(userSlots)
-                        userSlots = args[2]
+                        globalUserSlots = args[2]
                         await ctx.send('Set userSlots')
                         print(userSlots)
+                        print(globalUserSlots)
                 except Exception as e:
                     print('Unable to set anything')
                     await ctx.send('Invalid arguments:' + e)
