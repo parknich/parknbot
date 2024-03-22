@@ -31,13 +31,15 @@
             userListHTML += (i + 1) + '. ' + users[i] + '<br>'; // Add ordered number and user
           }
 
-          // Display users in queue (not in-game)
-          for (var j = userSlots; j < users.length; j++) {
-            userListHTML += users[j] + '<br>'; // Add user to the queue section
-          }
-
           // Update the user list on the page
           $('#user-list').html(userListHTML);
+
+          // Display users in queue (not in-game)
+          var queueListHTML = '';
+          for (var j = userSlots; j < users.length; j++) {
+            queueListHTML += (j + 1) + '. ' + users[j] + '<br>'; // Add ordered number and user to the queue section
+          }
+          $('#inqueue').html("In-Queue<br>" + queueListHTML);
         },
         error: function(error) {
           console.error('Error updating user list:', error);
