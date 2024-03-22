@@ -280,7 +280,7 @@ async def main():
             elif args[0] == f'next':
                 if ctx.author.is_mod or ctx.author.is_broadcaster:
                     if queueList:
-                        removed_user = queueList.pop(0)
+                        removed_user = queueList.pop(userSlots+1)
                         await update_queue_list()  # Call the function to update the queueList
                     else:
                         await ctx.send(f'The queue is empty.')
