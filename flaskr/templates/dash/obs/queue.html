@@ -11,7 +11,7 @@
   <p id="user-list">
   </p>
   <hr>
-  <p id =inqueuelabel=>
+  <p id="inqueuelabel">
     In-Queue
   </p>
   <p id="inqueue">
@@ -42,7 +42,7 @@
           for (var j = userSlots; j < users.length; j++) {
             queueListHTML += (j + 1) + '. ' + users[j] + '<br>'; // Add ordered number and user to the queue section
           }
-          $('#inqueue').html("In-Queue<br>" + queueListHTML);
+          $('#inqueue').html("<br>" + queueListHTML);
         },
         error: function(error) {
           console.error('Error updating user list:', error);
