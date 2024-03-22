@@ -253,6 +253,8 @@ async def main():
                 
                 if not in_game_message and not queue_message:
                     await ctx.send("No users in queue.")
+            elif args[0] == "test":
+                print(userSlots)
             elif args[0] == f"set":
                 try:
                     if args[1] == f"userSlots":
