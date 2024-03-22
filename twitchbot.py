@@ -258,6 +258,8 @@ async def main():
             elif args[0] == f"set":
                 try:
                     if args[1] == f"userSlots":
+                        print(args[2])
+                        print(userSlots)
                         userSlots = args[2]
                         await ctx.send('Set userSlots')
                         print(userSlots)
