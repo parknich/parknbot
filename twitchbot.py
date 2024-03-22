@@ -232,12 +232,12 @@ async def main():
             queue_users = list()  # Remaining users are in the queue
             global userSlots
             
-            in_game_users = queueList[:userSlots]  # First 4 users are considered in-game
-            queue_users = queueList[userSlots:]    # Remaining users are in the queue
+            in_game_users = queueList[:int(userSlots)]  # First 4 users are considered in-game
+            queue_users = queueList[int(userSlots):]    # Remaining users are in the queue
             
             if args[0] == "list":
-                in_game_users = queueList[:userSlots]  # First 4 users are considered in-game
-                queue_users = queueList[userSlots:]    # Remaining users are in the queue
+                in_game_users = queueList[:int(userSlots)]  # First 4 users are considered in-game
+                queue_users = queueList[int(userSlots):]    # Remaining users are in the queue
                 print(userSlots)
                 for user in in_game_users:
                     print(user)
