@@ -363,12 +363,12 @@ async def main():
                 try:
                     print(globals()[args[1]])
                     await ctx.send(globals()[args[1]])
-                except Exception:
+                except Exception as e:
                     try:
                         print(locals()[args[1]])
                         await ctx.send(locals()[args[1]])
-                    except:
-                        await ctx.send(f'Failed to print')
+                    except Exception as e2:
+                        await ctx.send(f'Failed to print' + e2)
                 
                 
                 
