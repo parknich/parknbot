@@ -8,6 +8,7 @@ from TikTokLive.client.logger import LogLevel
 import requests
 import config
 import httpx
+import logging
 #TODO: Make it so the first 4 people in queue are considered to be playing, then make it dynamically adjustable via a command
 debug = True
 
@@ -368,7 +369,7 @@ async def main():
                         print(locals()[args[1]])
                         await ctx.send(locals()[args[1]])
                     except Exception as e2:
-                        await ctx.send(f'Failed to print' + e2)
+                        await ctx.send(f'Failed to print: ' + e2)
                 
                 
                 
