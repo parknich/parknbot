@@ -63,8 +63,8 @@ def log(input, log_file='chat.log'):
         
 queueList = list()
 usersList = list()
-global userSlots
-userSlots = 3
+global globalUserSlots
+globalUserSlots = 3
 
 # Create the client
 tiktokClient: TikTokLiveClient = TikTokLiveClient(unique_id="@hubalubalu") 
@@ -229,7 +229,7 @@ async def main():
         async def queue(self, ctx: commands.Context, *args):
             in_game_users = list() # First 4 users are considered in-game
             queue_users = list()  # Remaining users are in the queue
-
+            userSlots = globalUserSlots
             
             in_game_users = queueList[:userSlots]  # First 4 users are considered in-game
             queue_users = queueList[userSlots:]    # Remaining users are in the queue
