@@ -256,9 +256,9 @@ async def main():
                     if args[1] == f"userSlots":
                         userSlots = args[2]
                         await ctx.send('Set userSlots')
-                except Exception:
+                except Exception as e:
                     print('Unable to set anything')
-                    await ctx.send('Invalid arguments')
+                    await ctx.send('Invalid arguments:' + e)
             elif args[0] == f"join":
                 if ctx.author.display_name not in queueList:
                     try:
@@ -358,18 +358,18 @@ async def main():
                 await ctx.send (f'queue next: Advances to the next user in the queue (Permission: Moderator+)')
             elif args[0] == f'queue' and args[1] == 'join':
                 await ctx.send(f'queue join: Joins the queue (Permission: User+)')
-        @commands.command()
-        async def debug(self, ctx: commands.Context, *args):
-            if args[0] == 'print':
-                try:
-                    print(globals()[args[1]])
-                    await ctx.send(globals()[args[1]])
-                except Exception as e:
-                    try:
-                        print(locals()[args[1]])
-                        await ctx.send(locals()[args[1]])
-                    except Exception as e2:
-                        await ctx.send(f'Failed to print: ' + e2)
+        #@commands.command()
+        #async def debug(self, ctx: commands.Context, *args):
+        #    if args[0] == 'print':
+        #        try:
+        #            print(globals()[args[1]])
+        #            await ctx.send(globals()[args[1]])
+        #        except Exception as e:
+        #            try:
+        #                print(locals()[args[1]])
+        #                await ctx.send(locals()[args[1]])
+        #            except Exception as e2:
+        #                await ctx.send(f'Failed to print: ' + e2)
                 
                 
                 
