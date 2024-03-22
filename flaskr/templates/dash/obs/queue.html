@@ -42,7 +42,7 @@
           for (var j = userSlots; j < users.length; j++) {
             queueListHTML += (j + 1) + '. ' + users[j] + '<br>'; // Add ordered number and user to the queue section
           }
-          $('#inqueue').html("<br>" + queueListHTML);
+          $('#inqueue').html(queueListHTML);
         },
         error: function(error) {
           console.error('Error updating user list:', error);
