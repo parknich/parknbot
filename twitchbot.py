@@ -226,9 +226,9 @@ async def main():
             await ctx.send(f'Printed to console')
         @commands.command()
         async def queue(self, ctx: commands.Context, *args):
-            userSlots
-            in_game_users # First 4 users are considered in-game
-            queue_users   # Remaining users are in the queue
+            userSlots = 3
+            in_game_users = list() # First 4 users are considered in-game
+            queue_users = list()  # Remaining users are in the queue
 
             
             in_game_users = queueList[:userSlots]  # First 4 users are considered in-game
