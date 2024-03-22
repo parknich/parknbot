@@ -225,16 +225,39 @@ async def main():
             await ctx.send(f'Printed to console')
         @commands.command()
         async def queue(self, ctx: commands.Context, *args):
-            if args[0] == f"list":
-                message = str()
+            global userSlots
+            global in_game_users # First 4 users are considered in-game
+            global queue_users   # Remaining users are in the queue
+            userSlots = 3
+            in_game_users = list()
+            queue_users = list()
+            
+            in_game_users = queueList[:userSlots]  # First 4 users are considered in-game
+            queue_users = queueList[userSlots:]    # Remaining users are in the queue
+            
+            if args[0] == "list":
+                in_game_users = queueList[:userSlots]  # First 4 users are considered in-game
+                queue_users = queueList[userSlots:]    # Remaining users are in the queue
                 
-                if not queueList:
-                    await ctx.send("The queue is currently empty.")
-
-                for index, user in enumerate(queueList, start=1):
-                    message += f" {index}. @{user}\n"
-
-                await ctx.send(f'{len(queueList)} users currently in queue:\n{message}')
+                in_game_message = "\n".join([f"  {index}. @{user} (In-Game)" for index, user in enumerate(in_game_users, start=1)])
+                queue_message = "\n".join([f"  {index}. @{user}" for index, user in enumerate(queue_users, start=len(in_game_users) + 1)])
+                
+                if in_game_message:
+                    await ctx.send(f"In-Game ({len(in_game_users)}): \n{in_game_message}")
+                
+                if queue_message:
+                    await ctx.send(f"In Queue ({len(queue_users)}): \n{queue_message}")
+                
+                if not in_game_message and not queue_message:
+                    await ctx.send("No users in queue.")
+            elif args[0] == f"set":
+                try:
+                    if args[1] == f"userSlots":
+                        userSlots = args[2]
+                        await ctx.send('Set userSlots')
+                except Exception:
+                    print('Unable to set anything')
+                    await ctx.send('Invalid arguments')
             elif args[0] == f"join":
                 if ctx.author.display_name not in queueList:
                     try:
