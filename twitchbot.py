@@ -60,7 +60,9 @@ def log(input, log_file='chat.log'):
     with open(log_file, 'a') as of:
         of.write(input + '\n')
         
-        
+userSlots = 3
+in_game_users = list()
+queue_users = list()
 queueList = list()
 usersList = list()
       
@@ -226,13 +228,6 @@ async def main():
             await ctx.send(f'Printed to console')
         @commands.command()
         async def queue(self, ctx: commands.Context, *args):
-            global userSlots
-            global in_game_users # First 4 users are considered in-game
-            global queue_users   # Remaining users are in the queue
-            userSlots = 3
-            in_game_users = list()
-            queue_users = list()
-            
             in_game_users = queueList[:userSlots]  # First 4 users are considered in-game
             queue_users = queueList[userSlots:]    # Remaining users are in the queue
             
