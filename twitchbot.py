@@ -63,8 +63,8 @@ def log(input, log_file='chat.log'):
         
 queueList = list()
 usersList = list()
-global globalUserSlots
-globalUserSlots = 3
+global userSlots
+userSlots = 3
 
 # Create the client
 tiktokClient: TikTokLiveClient = TikTokLiveClient(unique_id="@hubalubalu") 
@@ -229,7 +229,7 @@ async def main():
         async def queue(self, ctx: commands.Context, *args):
             in_game_users = list() # First 4 users are considered in-game
             queue_users = list()  # Remaining users are in the queue
-            userSlots = globalUserSlots
+            global userSlots
             
             in_game_users = queueList[:userSlots]  # First 4 users are considered in-game
             queue_users = queueList[userSlots:]    # Remaining users are in the queue
@@ -255,16 +255,14 @@ async def main():
                     await ctx.send("No users in queue.")
             elif args[0] == "test":
                 print(userSlots)
-                print(globalUserSlots)
             elif args[0] == f"set":
                 try:
                     if args[1] == f"userSlots":
                         print(args[2])
                         print(userSlots)
-                        globalUserSlots = args[2]
+                        userSlots = args[2]
                         await ctx.send('Set userSlots')
                         print(userSlots)
-                        print(globalUserSlots)
                 except Exception as e:
                     print('Unable to set anything')
                     await ctx.send('Invalid arguments:' + e)
