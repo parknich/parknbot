@@ -239,7 +239,7 @@ async def main():
             if args[0] == "list":
                 in_game_users = queueList[:userSlots]  # First 4 users are considered in-game
                 queue_users = queueList[userSlots:]    # Remaining users are in the queue
-                
+                print(userSlots + in_game_users + queue_users)
                 in_game_message = "\n".join([f"  {index}. @{user} (In-Game)" for index, user in enumerate(in_game_users, start=1)])
                 queue_message = "\n".join([f"  {index}. @{user}" for index, user in enumerate(queue_users, start=len(in_game_users) + 1)])
                 
@@ -256,6 +256,7 @@ async def main():
                     if args[1] == f"userSlots":
                         userSlots = args[2]
                         await ctx.send('Set userSlots')
+                        print(userSlots)
                 except Exception as e:
                     print('Unable to set anything')
                     await ctx.send('Invalid arguments:' + e)
