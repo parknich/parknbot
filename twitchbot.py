@@ -64,6 +64,7 @@ def log(input, log_file='chat.log'):
 queueList = list()
 usersList = list()
 global userSlots
+userSlots = int()
 userSlots = 3
 
 # Create the client
