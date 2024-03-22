@@ -36,8 +36,9 @@ def splitArgs(input_string):
 
 async def update_queue_list():
     # Send a POST request with the current queueList as a JSON array to the specified endpoint
+    global userSlots
     endpoint = 'http://127.0.0.1:80/dash/obs/queue'
-    payload = {'users': queueList}
+    payload = {'users': queueList, 'userSlots': userSlots}
     try:
         response = requests.post(endpoint, json=payload)
         response.raise_for_status()  # Raise an HTTPError for bad responses
