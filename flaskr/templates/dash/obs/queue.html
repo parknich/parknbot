@@ -26,11 +26,14 @@
           var userSlots = response.userSlots;
           var userListHTML = '';
 
-          // Limit the number of users in-game based on userSlots
-          for (var i = 0; i < userSlots; i++) {
-            if (i < users.length) {
-              userListHTML += (i + 1) + '. ' + users[i] + '<br>'; // Add ordered number and user
-            }
+          // Display users in-game
+          for (var i = 0; i < userSlots && i < users.length; i++) {
+            userListHTML += (i + 1) + '. ' + users[i] + '<br>'; // Add ordered number and user
+          }
+
+          // Display users in queue (not in-game)
+          for (var j = userSlots; j < users.length; j++) {
+            userListHTML += users[j] + '<br>'; // Add user to the queue section
           }
 
           // Update the user list on the page
