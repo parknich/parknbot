@@ -35,8 +35,11 @@ header {
     font-size: 34px;
     padding: 1px;
   }
-  #inqueue {
+  #inqueuelabel {
     font-size: 34px;
     padding: 1px;
+  }
+  #inqueue {
+    font-size: 24px; /* Set your desired larger font size for the users */
   }
   
