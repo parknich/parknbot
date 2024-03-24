@@ -31,6 +31,10 @@ header {
     font-size: 24px; /* Set your desired larger font size for the users */
   }
   
+  #label {
+    font-size: 34px;
+  }
+
   #chat {
     font-size: 24px;
     padding: 1px;
