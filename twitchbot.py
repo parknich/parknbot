@@ -128,7 +128,7 @@ async def main():
             await update_chat(user, message, 'TikTok')
             chan = TwitchBot.get_channel("hubalubalu")
             loop = asyncio.get_event_loop()
-            loop.create_task(chan.send("Send this message"))
+            loop.create_task(chan.send(f'[TikTok] {user}: {message}'))
 
 
         #@tiktokClient.on(SocialEvent)
