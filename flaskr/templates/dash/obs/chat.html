@@ -17,9 +17,9 @@
         method: 'GET',
         dataType: 'json',
         success: function(response) {
-          var msg = response.msg;
-          var user = response.user;
-          var platform = response.platform;
+          var msg = response.chatMsg;
+          var user = response.chatUser;
+          var platform = response.chatMsgPlatform;
 
           // Add new message to the chat array
           if (platform && msg && user) {
