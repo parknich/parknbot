@@ -8,17 +8,12 @@ from flaskr.db import get_db
 bp = Blueprint('queue', __name__)
 
 # Initialize a global variable to store chatUser data
-global_users = ['No chatUsers in queue']
+global_users = ['No users in queue']
 global_response = ['No response']
 global userSlots
 userSlots = int()
 global chat
-global chatMsg
-global chatUser
-chatUser = str()
 chat = list()
-chatMsg = str()
-chatMsgPlatform = bool()
 
 # Pages
 @bp.route('/dash/obs/queue', methods=('GET', 'POST'))
@@ -28,7 +23,7 @@ def queue():
     if request.method == 'POST':
         # Assuming the data is sent as a JSON array in the request
         global userSlots
-        users1 = request.json.get('chatUsers', [])
+        users1 = request.json.get('users', [])
         print(users1)
         userSlots = int(request.json.get('userSlots'))
         # Update the global variable with the received data
@@ -39,11 +34,11 @@ def queue():
             global_users = users1
             
         for user in global_users:
-            print(chatUser)
+            print(user)
             
         
 
-        # Process the chatUsers list as needed (store in the database, etc.)
+        # Process the users list as needed (store in the database, etc.)
 
     if request.method == 'GET' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         print(global_users)
@@ -80,20 +75,20 @@ def responses():
     return render_template('dash/obs/responses.html', response=global_response)
 @bp.route('/dash/obs/chat', methods=('GET', 'POST'))
 def chat():
-    global chatMsg
+    global chat
 
     if request.method == 'POST':
-        chatMsg = request.json.get('chat', [])
-        for msg in chatMsg:
+        chat = request.json.get('chat', [])
+        for msg in chat:
             print(msg)
         
     
     if request.method == 'GET' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        print(chatMsg)
-        return jsonify(chatMsg=chatMsg)
+        print(chat)
+        return jsonify(chat=chat)
         
         
     
     db = get_db()
-    return render_template('dash/obs/chat.html', chatMsg=chatMsg)
+    return render_template('dash/obs/chat.html', chat=chat)
 
