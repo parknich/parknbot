@@ -7,13 +7,13 @@ from flaskr.auth import login_required
 from flaskr.db import get_db
 bp = Blueprint('queue', __name__)
 
-# Initialize a global variable to store chatUser data
+# Initialize a global variable to store chatListUser data
 global_users = ['No users in queue']
 global_response = ['No response']
 global userSlots
 userSlots = int()
-global chat
-chat = list()
+global chatList
+chatList = list()
 
 # Pages
 @bp.route('/dash/obs/queue', methods=('GET', 'POST'))
@@ -42,11 +42,11 @@ def queue():
 
     if request.method == 'GET' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         print(global_users)
-        return jsonify(chatUsers=global_users, userSlots=userSlots)
+        return jsonify(users=global_users, userSlots=userSlots)
 
     
     db = get_db()
-    return render_template('dash/obs/queue.html', chatUsers=global_users, userSlots=userSlots)
+    return render_template('dash/obs/queue.html', users=global_users, userSlots=userSlots)
 
 
 @bp.route('/dash/obs/responses', methods=('GET', 'POST'))
@@ -65,7 +65,7 @@ def responses():
         for response in global_response:
             print(response)
 
-        # Process the chatUsers list as needed (store in the database, etc.)
+        # Process the users list as needed (store in the database, etc.)
 
     if request.method == 'GET' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         print(global_response)
@@ -75,20 +75,20 @@ def responses():
     return render_template('dash/obs/responses.html', response=global_response)
 @bp.route('/dash/obs/chat', methods=('GET', 'POST'))
 def chat():
-    global chat
+    global chatList
 
     if request.method == 'POST':
-        chat = request.json.get('chat', [])
-        for msg in chat:
+        chatList = request.json.get('chat', [])
+        for msg in chatList:
             print(msg)
         
     
     if request.method == 'GET' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        print(chat)
-        return jsonify(chat=chat)
+        print(chatList)
+        return jsonify(chatList=chatList)
         
         
     
     db = get_db()
-    return render_template('dash/obs/chat.html', chat=chat)
+    return render_template('dash/obs/chat.html', chatList=chatList)
 
