@@ -33,6 +33,7 @@ header {
   
   #label {
     font-size: 34px;
+    padding: 1px;
   }
 
   #chat {
