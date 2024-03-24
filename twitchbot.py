@@ -43,7 +43,7 @@ async def update_chat(user, content, platform):
         chat = chat[1:]
     for message in chat:
         print(message)
-    endpoint = '127.0.0.1:80/dash/obs/chat'
+    endpoint = 'http://127.0.0.1:80/dash/obs/chat'
     payload = {'chat': chat}
     try:
         response = requests.post(endpoint, json=payload)
