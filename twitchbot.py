@@ -48,7 +48,6 @@ async def update_chat(user, content, platform):
     try:
         response = requests.post(endpoint, json=payload)
         response.raise_for_status()
-        print(f'{[payload]}')
         if debug:
             print(f'Sent chat message to server')
     except requests.exceptions.RequestException as e:
@@ -96,106 +95,111 @@ global userSlots
 userSlots = int()
 userSlots = 3
 
-# Create the client
-tiktokClient: TikTokLiveClient = TikTokLiveClient(unique_id="@hubalubalu") 
-print(f'[TikTok] Created the tiktok client')
-
-# Listen to an event with a decorator!
-@tiktokClient.on(ConnectEvent)
-async def on_connect(event: ConnectEvent):
-    message = '[TikTok] Connected to @{event.unique_id} (Room ID: {tiktokClient.room_id})'
-    print(message)
-    log(message)
-
-
-@tiktokClient.on(CommentEvent)
-async def on_comment(event: CommentEvent) -> None:
-    print(f"[TikTok] {event.user.nickname}: {event.comment}")
-    if event.comment == "?queue join":
-        queueList.append(event.user.nickname)
-        await update_queue_list()
-    if event.comment == "?queue leave":
-        queueList.pop(queueList.index(f'{event.user.nickname}'))
-        await update_queue_list()
-    #Logging
-    channel = 'Hubalubalu'
-    user = event.user.nickname
-    message = event.comment
-    fulltiktokmessage = '[in "{channel}"] {user}: {message}'
-    log(fulltiktokmessage)
-    await update_chat(user, message, 'TikTok')
-
-#@tiktokClient.on(SocialEvent)
-#async def on_social_event(event: SocialEvent):
-#    event.user.
-    
-
-#@tiktokClient.on(DisconnectEvent)
-#async def on_disconnect(event: DisconnectEvent):
-#    
-
-
-async def check_loop():
-    ## Prep
-    
-    # [TikTok] Enable download info
-    print(f'[TikTok] Enabling download info')
-    tiktokClient.logger.setLevel(LogLevel.INFO.value)
-    print(f'[TikTok] Enabled download info')
-
-    # [TikTok] Set the login session ID token BEFORE connecting
-    print(f'[TikTok] Setting login session ID')
-    tiktokClient.web.set_session_id(config.session_id)
-    print(f'[TikTok] Set login session ID')
-
-    print(f'[TikTok] Connecting...')
-    a = False
-    connected = False
-    # Run 24/7
-    while True:
-        try:
-            # Check if they're live
-            while not await tiktokClient.is_live():
-                tiktokClient.logger.info("Client is currently not live. Checking again in 60 seconds.")
-                connected=False
-                await asyncio.sleep(60)  # Spamming the endpoint will get you blocked
-        except httpx.HTTPError as e:
-            # Handle HTTP errors
-            print(f"HTTP error occurred: {e}")
-        except httpx.Request as e:
-            # Handle request-related errors (e.g., network issues)
-            print(f"Request error occurred: {e}")
-        except httpx.Timeout as e:
-            # Handle timeout errors
-            print(f"Request timeout occurred: {e}")
-        except Exception as e:
-            # Catch any other exceptions
-            print(f"An unexpected error occurred: {e}")
-            
-            
-
-        # Connect once they become live
-        tiktok_is_live = True
-        
-        while not connected:
-            tiktokClient.logger.info("Requested client is live!, connecting")
-            try:
-                await tiktokClient.start()
-                connected = True
-                return
-            except Exception as e:
-                print(f'Failed to connect to TikTokLive: {str(e)}')
-                connected = False
-                await asyncio.sleep(10)
-                return
-        else:
-            connected = True
-        
-        await asyncio.sleep(60)
-        
 
 
 async def main():
+    class TikTokBot():
+        # Create the client
+        tiktokClient: TikTokLiveClient = TikTokLiveClient(unique_id="@hubalubalu") 
+        print(f'[TikTok] Created the tiktok client')
+
+        # Listen to an event with a decorator!
+        @tiktokClient.on(ConnectEvent)
+        async def on_connect(event: ConnectEvent):
+            message = '[TikTok] Connected to @{event.unique_id} (Room ID: {tiktokClient.room_id})'
+            print(message)
+            log(message)
+
+        @tiktokClient.on(CommentEvent)
+        async def on_comment(event: CommentEvent) -> None:
+            print(f"[TikTok] {event.user.nickname}: {event.comment}")
+            if event.comment == "?queue join":
+                queueList.append(event.user.nickname)
+                await update_queue_list()
+            if event.comment == "?queue leave":
+                queueList.pop(queueList.index(f'{event.user.nickname}'))
+                await update_queue_list()
+            #Logging
+            channel = 'Hubalubalu'
+            user = event.user.nickname
+            message = event.comment
+            fulltiktokmessage = '[in "{channel}"] {user}: {message}'
+            log(fulltiktokmessage)
+            await update_chat(user, message, 'TikTok')
+            chan = TwitchBot.get_channel("hubalubalu")
+            loop = asyncio.get_event_loop()
+            loop.create_task(chan.send("Send this message"))
+
+
+        #@tiktokClient.on(SocialEvent)
+        #async def on_social_event(event: SocialEvent):
+        #    event.user.
+            
+
+        #@tiktokClient.on(DisconnectEvent)
+        #async def on_disconnect(event: DisconnectEvent):
+        #    
+
+
+        async def check_loop(self):
+            ## Prep
+            
+            # [TikTok] Enable download info
+            print(f'[TikTok] Enabling download info')
+            self.tiktokClient.logger.setLevel(LogLevel.INFO.value)
+            print(f'[TikTok] Enabled download info')
+
+            # [TikTok] Set the login session ID token BEFORE connecting
+            print(f'[TikTok] Setting login session ID')
+            self.tiktokClient.web.set_session_id(config.session_id)
+            print(f'[TikTok] Set login session ID')
+            
+            print(f'[TikTok] Connecting...')
+            a = False
+            connected = False
+            # Run 24/7
+            while True:
+                try:
+                    # Check if they're live
+                    while not await self.tiktokClient.is_live():
+                        self.tiktokClient.logger.info("Client is currently not live. Checking again in 60 seconds.")
+                        connected=False
+                        await asyncio.sleep(60)  # Spamming the endpoint will get you blocked
+                except httpx.HTTPError as e:
+                    # Handle HTTP errors
+                    print(f"HTTP error occurred: {e}")
+                except httpx.Request as e:
+                    # Handle request-related errors (e.g., network issues)
+                    print(f"Request error occurred: {e}")
+                except httpx.Timeout as e:
+                    # Handle timeout errors
+                    print(f"Request timeout occurred: {e}")
+                except Exception as e:
+                    # Catch any other exceptions
+                    print(f"An unexpected error occurred: {e}")
+                    
+                    
+
+                # Connect once they become live
+                tiktok_is_live = True
+                
+                while not connected:
+                    self.tiktokClient.logger.info("Requested client is live!, connecting")
+                    try:
+                        await self.tiktokClient.start()
+                        connected = True
+                        return
+                    except Exception as e:
+                        print(f'Failed to connect to TikTokLive: {str(e)}')
+                        connected = False
+                        await asyncio.sleep(10)
+                        return
+                else:
+                    connected = True
+                
+                await asyncio.sleep(60)
+        
+
     class Bot(commands.Bot):
         def __init__(self):
             # Initialise our Bot with our access token, prefix and a list of channels to join on boot...
@@ -221,11 +225,7 @@ async def main():
         async def event_join(self, channel: Channel, user: User):
             usersList.append(channel)
             return await super().event_join(channel, user)
-                
-
-
-            
-
+        
         async def event_message(self, message):
             # logging bot messages or some shit idfk...
             fullbotmessage = '[ECHO] [in "{channel}"] ({timestamp}) {user}: {message}'
@@ -247,7 +247,7 @@ async def main():
             # Since we have commands and are overriding the default `event_message`
             # We must let the bot know we want to handle and invoke our commands...
             await self.handle_commands(message)
-
+        
         @commands.command()
         async def hello(self, ctx: commands.Context):
             await ctx.send(f'Hello {ctx.author.name}!')
@@ -436,7 +436,7 @@ async def main():
     
     ## Init
 
-    await asyncio.gather(TwitchBot.start(), check_loop())
+    await asyncio.gather(TwitchBot.start(), TikTokBot.check_loop())
 asyncio.run(main())
 # bot.run() is blocking and will stop execution of any below code here until stopped or closed.
 
