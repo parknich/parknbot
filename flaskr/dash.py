@@ -14,8 +14,8 @@ global chatUserSlots
 chatUserSlots = int()
 global chat
 global chatMsg
-global chatchatUser
-chatchatUser = str()
+global chatUser
+chatUser = str()
 chat = list()
 chatMsg = str()
 chatMsgPlatform = bool()
