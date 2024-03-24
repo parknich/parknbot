@@ -78,7 +78,7 @@ def responses():
 
     db = get_db()
     return render_template('dash/obs/responses.html', response=global_response)
-@bp.route('dash/obs/chat', methods=('GET', 'POST'))
+@bp.route('/dash/obs/chat', methods=('GET', 'POST'))
 def chat():
     global chat
     global chatUser
