@@ -15,7 +15,7 @@ header {
     color: #ecf0f1; /* White text color */
     border: 3px solid #ecf0f1; /* Increased border width and white color for contrast */
     background-color: #2c3e50; /* Clean blue-gray background color */
-    width: 300px; /* Set your desired fixed width */
+    width: 400px; /* Set your desired fixed width */
     height: auto; /* Allow the height to adjust based on content */
     border-top-left-radius: 10px; /* Rounded corners */
     border-top-right-radius: 10px;
