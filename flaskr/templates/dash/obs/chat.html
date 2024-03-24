@@ -17,7 +17,7 @@
         method: 'GET',
         dataType: 'json',
         success: function(response) {
-          var chat = response.chat;
+          var chat = response.chatList;
 
           // Update the chat paragraph with the contents of the chat array
           $('#chat').html(chat.join('<br>'));
