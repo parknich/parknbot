@@ -13,9 +13,12 @@ global_response = ['No response']
 global userSlots
 userSlots = int()
 global chat
-global msg
+global chatMsg
+global chatUser
+chatUser = str()
 chat = list()
-msg = str()
+chatMsg = str()
+chatMsgPlatform = bool()
 
 # Pages
 @bp.route('/dash/obs/queue', methods=('GET', 'POST'))
@@ -78,14 +81,23 @@ def responses():
 @bp.route('dash/obs/chat', methods=('GET', 'POST'))
 def chat():
     global chat
-    global msg
+    global chatUser
+    global chatMsg
+    global chatMsgPlatform
+
     if request.method == 'POST':
-        msg = str(request.json.get('msg', []))
-        print(msg)
+        chatMsgPlatform = request.json.get('chatMsgPlatform', [])
+        chatMsg = request.json.get('chatMsg', [])
+        user = request.json.get('user', [])
+    
+        print("chatMsg: " + chatMsg)
+    
+    if request.method == 'GET' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        print(chatMsg)
+        return jsonify(chatMsg=chatMsg, user=user, chatMsgPlatform=chatMsgPlatform)
         
         
-        
-        
+    
     db = get_db()
-    return render_template('dash/obs/chat.html', msg=msg)
+    return render_template('dash/obs/chat.html', chatMsg=chatMsg, user=user)
 

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="{{ url_for('static', filename='queue.css') }}">
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<section class="content">
+  <title>{% block title %}{% endblock %} - parknBot</title>
+  {% block content %}
+  <p id="chat"></p>
+
+  <script>
+    var chat = ["Joined the chatroom"];
+    function updateUserList() {
+      // Make an AJAX request to get the updated user list
+      $.ajax({
+        url: '/dash/obs/chat',
+        method: 'GET',
+        dataType: 'json',
+        success: function(response) {
+          var msg = response.msg;
+          var user = response.user;
+          var platform = response.platform;
+
+          // Add new message to the chat array
+          if (platform && msg && user) {
+            chat.push("[" + platform + "] " user + ": " + msg);
+          }
+
+          // Limit the chat array to a maximum of 10 lines
+          if (chat.length > 10) {
+            chat.shift(); // Remove the oldest message if the array exceeds 10 lines
+          }
+
+          // Update the chat paragraph with the contents of the chat array
+          $('#chat').html(chat.join('<br>'));
+        },
+        error: function(error) {
+          console.error('Error updating chat:', error);
+        }
+      });
+    }
+
+    // Call the function initially
+    updateUserList();
+
+    // You might want to set up a timer to periodically update the chat
+    setInterval(updateUserList, 1000);  // Update every 5 seconds, for example
+  </script>
+  {% endblock %}
+</section>

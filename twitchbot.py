@@ -34,6 +34,18 @@ def splitArgs(input_string):
     else:
         return None  # Handle the case where the string is empty
 
+async def update_chat(user, msg, platform):
+    endpoint = '127.0.0.1:80/dash/obs/chat'
+    payload = {'chatUser': user, 'chatMsg': msg, 'chatMsgPlatform': platform}
+    try:
+        response = requests.post(endpoint, json=payload)
+        response.raise_for_status()
+        print(f'{[payload]}')
+        if debug:
+            print(f'Sent chat message to server')
+    except requests.exceptions.RequestException as e:
+        print(f'Failed to send chat message to server')
+
 async def update_queue_list():
     # Send a POST request with the current queueList as a JSON array to the specified endpoint
     global userSlots
@@ -62,12 +74,12 @@ def log(input, log_file='chat.log'):
         of.write(input + '\n')
         
         
-async def connect_to_server():
-    uri = "ws://localhost:8765"
-    async with websockets.connect(uri) as websocket:
-        while True:
-            message = await websocket.recv()
-            print(f"Received message from server: {message}")
+#async def connect_to_server():
+#    uri = "ws://localhost:8765"
+#    async with websockets.connect(uri) as websocket:
+#        while True:
+#            message = await websocket.recv()
+#            print(f"Received message from server: {message}")
         
         
 queueList = list()
@@ -103,6 +115,7 @@ async def on_comment(event: CommentEvent) -> None:
     message = event.comment
     fulltiktokmessage = '[in "{channel}"] {user}: {message}'
     log(fulltiktokmessage)
+    update_chat(user, message, 'TikTok')
 
 #@tiktokClient.on(SocialEvent)
 #async def on_social_event(event: SocialEvent):
@@ -221,10 +234,7 @@ async def main():
             fullmessageformatted=fullmessage.format(channel=channel, timestamp=messagetime, user=author, message=content)
             # Print the contents of our message to console and chatlog.txt...
             log(fullmessageformatted)
-
-            
-            
-
+            update_chat(author, content, 'Twitch')
 
             # Since we have commands and are overriding the default `event_message`
             # We must let the bot know we want to handle and invoke our commands...
