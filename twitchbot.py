@@ -12,7 +12,8 @@ import logging
 import websockets
 #TODO: Make it so the first 4 people in queue are considered to be playing, then make it dynamically adjustable via a command
 debug = True
-
+global chat
+chat = list()
 # Create the twitch client
 channel_list = ['hubalubalu', 'parknich']
 def iterateFile(file):
@@ -34,9 +35,16 @@ def splitArgs(input_string):
     else:
         return None  # Handle the case where the string is empty
 
-async def update_chat(user, msg, platform):
+async def update_chat(user, content, platform):
+    global chat
+    msg = f'[{platform}] {user}: {content}'
+    chat.append(msg)
+    if len(chat) > 10:
+        chat = chat[1:]
+    for message in chat:
+        print(message)
     endpoint = '127.0.0.1:80/dash/obs/chat'
-    payload = {'chatUser': user, 'chatMsg': msg, 'chatMsgPlatform': platform}
+    payload = {'chat': chat}
     try:
         response = requests.post(endpoint, json=payload)
         response.raise_for_status()

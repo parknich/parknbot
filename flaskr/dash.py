@@ -80,24 +80,20 @@ def responses():
     return render_template('dash/obs/responses.html', response=global_response)
 @bp.route('/dash/obs/chat', methods=('GET', 'POST'))
 def chat():
-    global chat
-    global chatUser
     global chatMsg
-    global chatMsgPlatform
 
     if request.method == 'POST':
-        chatMsgPlatform = request.json.get('chatMsgPlatform', [])
-        chatMsg = request.json.get('chatMsg', [])
-        chatUser = request.json.get('chatUser', [])
-    
-        print("chatMsg: " + chatMsg)
+        chatMsg = request.json.get('chat', [])
+        for msg in chatMsg:
+            print(msg)
+        
     
     if request.method == 'GET' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         print(chatMsg)
-        return jsonify(chatMsg=chatMsg, chatUser=chatUser, chatMsgPlatform=chatMsgPlatform)
+        return jsonify(chatMsg=chatMsg)
         
         
     
     db = get_db()
-    return render_template('dash/obs/chat.html', chatMsg=chatMsg, chatUser=chatUser)
+    return render_template('dash/obs/chat.html', chatMsg=chatMsg)
 

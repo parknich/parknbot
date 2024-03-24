@@ -17,19 +17,7 @@
         method: 'GET',
         dataType: 'json',
         success: function(response) {
-          var msg = response.chatMsg;
-          var user = response.chatUser;
-          var platform = response.chatMsgPlatform;
-
-          // Add new message to the chat array
-          if (platform && msg && user) {
-            chat.push("[" + platform + "] " + user + ": " + msg);
-          }
-
-          // Limit the chat array to a maximum of 10 lines
-          if (chat.length > 10) {
-            chat.shift(); // Remove the oldest message if the array exceeds 10 lines
-          }
+          var chat = response.chat;
 
           // Update the chat paragraph with the contents of the chat array
           $('#chat').html(chat.join('<br>'));
