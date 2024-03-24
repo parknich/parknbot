@@ -7,15 +7,15 @@ from flaskr.auth import login_required
 from flaskr.db import get_db
 bp = Blueprint('queue', __name__)
 
-# Initialize a global variable to store user data
-global_users = ['No users in queue']
+# Initialize a global variable to store chatUser data
+global_chatUsers = ['No chatUsers in queue']
 global_response = ['No response']
-global userSlots
-userSlots = int()
+global chatUserSlots
+chatUserSlots = int()
 global chat
 global chatMsg
-global chatUser
-chatUser = str()
+global chatchatUser
+chatchatUser = str()
 chat = list()
 chatMsg = str()
 chatMsgPlatform = bool()
@@ -23,35 +23,35 @@ chatMsgPlatform = bool()
 # Pages
 @bp.route('/dash/obs/queue', methods=('GET', 'POST'))
 def queue():
-    global global_users
+    global global_chatUsers
 
     if request.method == 'POST':
         # Assuming the data is sent as a JSON array in the request
-        global userSlots
-        users1 = request.json.get('users', [])
-        print(users1)
-        userSlots = int(request.json.get('userSlots'))
+        global chatUserSlots
+        chatUsers1 = request.json.get('chatUsers', [])
+        print(chatUsers1)
+        chatUserSlots = int(request.json.get('chatUserSlots'))
         # Update the global variable with the received data
-        if not users1:
-            users1=['No users in queue']
-            global_users = users1
+        if not chatUsers1:
+            chatUsers1=['No chatUsers in queue']
+            global_chatUsers = chatUsers1
         else:   
-            global_users = users1
+            global_chatUsers = chatUsers1
             
-        for user in global_users:
-            print(user)
+        for chatUser in global_chatUsers:
+            print(chatUser)
             
         
 
-        # Process the users list as needed (store in the database, etc.)
+        # Process the chatUsers list as needed (store in the database, etc.)
 
     if request.method == 'GET' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        print(global_users)
-        return jsonify(users=global_users, userSlots=userSlots)
+        print(global_chatUsers)
+        return jsonify(chatUsers=global_chatUsers, chatUserSlots=chatUserSlots)
 
     
     db = get_db()
-    return render_template('dash/obs/queue.html', users=global_users, userSlots=userSlots)
+    return render_template('dash/obs/queue.html', chatUsers=global_chatUsers, chatUserSlots=chatUserSlots)
 
 
 @bp.route('/dash/obs/responses', methods=('GET', 'POST'))
@@ -70,7 +70,7 @@ def responses():
         for response in global_response:
             print(response)
 
-        # Process the users list as needed (store in the database, etc.)
+        # Process the chatUsers list as needed (store in the database, etc.)
 
     if request.method == 'GET' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         print(global_response)
@@ -88,16 +88,16 @@ def chat():
     if request.method == 'POST':
         chatMsgPlatform = request.json.get('chatMsgPlatform', [])
         chatMsg = request.json.get('chatMsg', [])
-        user = request.json.get('user', [])
+        chatUser = request.json.get('chatUser', [])
     
         print("chatMsg: " + chatMsg)
     
     if request.method == 'GET' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         print(chatMsg)
-        return jsonify(chatMsg=chatMsg, user=user, chatMsgPlatform=chatMsgPlatform)
+        return jsonify(chatMsg=chatMsg, chatUser=chatUser, chatMsgPlatform=chatMsgPlatform)
         
         
     
     db = get_db()
-    return render_template('dash/obs/chat.html', chatMsg=chatMsg, user=user)
+    return render_template('dash/obs/chat.html', chatMsg=chatMsg, chatUser=chatUser)
 
