@@ -11,7 +11,7 @@
   <script>
     var chat = ["Joined the chatroom"];
     function updateChatArray() {
-      // Make an AJAX request to get the updated user list
+      // Make an AJAX request to get the updated chat array
       $.ajax({
         url: '/dash/obs/chat',
         method: 'GET',
@@ -23,7 +23,7 @@
 
           // Add new message to the chat array
           if (platform && msg && user) {
-            chat.push("[" + platform + "] " user + ": " + msg);
+            chat.push("[" + platform + "] " + user + ": " + msg);
           }
 
           // Limit the chat array to a maximum of 10 lines

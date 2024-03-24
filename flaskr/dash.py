@@ -8,10 +8,10 @@ from flaskr.db import get_db
 bp = Blueprint('queue', __name__)
 
 # Initialize a global variable to store chatUser data
-global_chatUsers = ['No chatUsers in queue']
+global_users = ['No chatUsers in queue']
 global_response = ['No response']
-global chatUserSlots
-chatUserSlots = int()
+global userSlots
+userSlots = int()
 global chat
 global chatMsg
 global chatUser
@@ -23,22 +23,22 @@ chatMsgPlatform = bool()
 # Pages
 @bp.route('/dash/obs/queue', methods=('GET', 'POST'))
 def queue():
-    global global_chatUsers
+    global global_users
 
     if request.method == 'POST':
         # Assuming the data is sent as a JSON array in the request
-        global chatUserSlots
-        chatUsers1 = request.json.get('chatUsers', [])
-        print(chatUsers1)
-        chatUserSlots = int(request.json.get('chatUserSlots'))
+        global userSlots
+        users1 = request.json.get('chatUsers', [])
+        print(users1)
+        userSlots = int(request.json.get('userSlots'))
         # Update the global variable with the received data
-        if not chatUsers1:
-            chatUsers1=['No chatUsers in queue']
-            global_chatUsers = chatUsers1
+        if not users1:
+            users1=['No users in queue']
+            global_users = users1
         else:   
-            global_chatUsers = chatUsers1
+            global_users = users1
             
-        for chatUser in global_chatUsers:
+        for user in global_users:
             print(chatUser)
             
         
@@ -46,12 +46,12 @@ def queue():
         # Process the chatUsers list as needed (store in the database, etc.)
 
     if request.method == 'GET' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        print(global_chatUsers)
-        return jsonify(chatUsers=global_chatUsers, chatUserSlots=chatUserSlots)
+        print(global_users)
+        return jsonify(chatUsers=global_users, userSlots=userSlots)
 
     
     db = get_db()
-    return render_template('dash/obs/queue.html', chatUsers=global_chatUsers, chatUserSlots=chatUserSlots)
+    return render_template('dash/obs/queue.html', chatUsers=global_users, userSlots=userSlots)
 
 
 @bp.route('/dash/obs/responses', methods=('GET', 'POST'))
