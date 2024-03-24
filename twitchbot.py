@@ -3,12 +3,13 @@ from twitchio.ext import commands;
 import asyncio
 from twitchio.user import User
 from TikTokLive import TikTokLiveClient
-from TikTokLive.events import ConnectEvent, CommentEvent
+from TikTokLive.events import ConnectEvent, CommentEvent, SocialEvent
 from TikTokLive.client.logger import LogLevel
 import requests
 import config
 import httpx
 import logging
+import websockets
 #TODO: Make it so the first 4 people in queue are considered to be playing, then make it dynamically adjustable via a command
 debug = True
 
@@ -32,7 +33,6 @@ def splitArgs(input_string):
         return words
     else:
         return None  # Handle the case where the string is empty
-
 
 async def update_queue_list():
     # Send a POST request with the current queueList as a JSON array to the specified endpoint
@@ -62,6 +62,14 @@ def log(input, log_file='chat.log'):
         of.write(input + '\n')
         
         
+async def connect_to_server():
+    uri = "ws://localhost:8765"
+    async with websockets.connect(uri) as websocket:
+        while True:
+            message = await websocket.recv()
+            print(f"Received message from server: {message}")
+        
+        
 queueList = list()
 usersList = list()
 global userSlots
@@ -75,7 +83,9 @@ print(f'[TikTok] Created the tiktok client')
 # Listen to an event with a decorator!
 @tiktokClient.on(ConnectEvent)
 async def on_connect(event: ConnectEvent):
-    print(f"[TikTok] Connected to @{event.unique_id} (Room ID: {tiktokClient.room_id})")
+    message = '[TikTok] Connected to @{event.unique_id} (Room ID: {tiktokClient.room_id})'
+    print(message)
+    log(message)
 
 
 @tiktokClient.on(CommentEvent)
@@ -87,6 +97,22 @@ async def on_comment(event: CommentEvent) -> None:
     if event.comment == "?queue leave":
         queueList.pop(queueList.index(f'{event.user.nickname}'))
         await update_queue_list()
+    #Logging
+    channel = 'Hubalubalu'
+    user = event.user.nickname
+    message = event.comment
+    fulltiktokmessage = '[in "{channel}"] {user}: {message}'
+    log(fulltiktokmessage)
+
+#@tiktokClient.on(SocialEvent)
+#async def on_social_event(event: SocialEvent):
+#    event.user.
+    
+
+#@tiktokClient.on(DisconnectEvent)
+#async def on_disconnect(event: DisconnectEvent):
+#    
+
 
 async def check_loop():
     ## Prep
@@ -130,17 +156,20 @@ async def check_loop():
         # Connect once they become live
         tiktok_is_live = True
         
-        if not connected:
+        while not connected:
             tiktokClient.logger.info("Requested client is live!, connecting")
             try:
                 await tiktokClient.start()
                 connected = True
-            except Exception:
-                print('Failed to connect to TikTokLive')
+                return
+            except Exception as e:
+                print(f'Failed to connect to TikTokLive: {str(e)}')
                 connected = False
+                await asyncio.sleep(10)
                 return
         else:
             connected = True
+        
         await asyncio.sleep(60)
         
 
@@ -352,6 +381,8 @@ async def main():
                                 
                         await ctx.send(f'Cleared queue')
                         await update_queue_list()  # Call the function to update the queueList
+                    else:
+                        await ctx.send(f'Queue already empty')
                 else:
                     await ctx.send("Error 3: Insufficient permissions")
             else:

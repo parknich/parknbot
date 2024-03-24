@@ -5,7 +5,6 @@ from werkzeug.exceptions import abort
 
 from flaskr.auth import login_required
 from flaskr.db import get_db
-
 bp = Blueprint('queue', __name__)
 
 # Initialize a global variable to store user data
@@ -13,7 +12,12 @@ global_users = ['No users in queue']
 global_response = ['No response']
 global userSlots
 userSlots = int()
-@login_required
+global chat
+global msg
+chat = list()
+msg = str()
+
+# Pages
 @bp.route('/dash/obs/queue', methods=('GET', 'POST'))
 def queue():
     global global_users
@@ -46,7 +50,7 @@ def queue():
     db = get_db()
     return render_template('dash/obs/queue.html', users=global_users, userSlots=userSlots)
 
-@login_required
+
 @bp.route('/dash/obs/responses', methods=('GET', 'POST'))
 def responses():
     global global_response
@@ -71,4 +75,17 @@ def responses():
 
     db = get_db()
     return render_template('dash/obs/responses.html', response=global_response)
+@bp.route('dash/obs/chat', methods=('GET', 'POST'))
+def chat():
+    global chat
+    global msg
+    if request.method == 'POST':
+        msg = str(request.json.get('msg', []))
+        print(msg)
+        
+        
+        
+        
+    db = get_db()
+    return render_template('dash/obs/chat.html', msg=msg)
 

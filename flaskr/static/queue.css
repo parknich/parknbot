@@ -4,8 +4,7 @@ header {
     background-color: #2c3e50; /* Clean blue-gray background color */
     color: #ecf0f1; /* Clean light text color for contrast */
     padding: 10px;
-    border-top-left-radius: 10px; /* Rounded corners */
-    border-top-right-radius: 10px;
+
     font-size: 34px; /* Set the font size for the header */
   }
   
@@ -19,6 +18,8 @@ header {
     background-color: #2c3e50; /* Clean blue-gray background color */
     width: 300px; /* Set your desired fixed width */
     height: auto; /* Allow the height to adjust based on content */
+    border-top-left-radius: 10px; /* Rounded corners */
+    border-top-right-radius: 10px;
     border-bottom-left-radius: 10px; /* Rounded corners */
     border-bottom-right-radius: 10px;
     box-sizing: border-box; /* Include padding and border in the box's total width and height */
