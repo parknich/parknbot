@@ -79,12 +79,9 @@ def chat():
 
     if request.method == 'POST':
         chatList = request.json.get('chat', [])
-        for msg in chatList:
-            print(msg)
         
     
     if request.method == 'GET' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        print(chatList)
         return jsonify(chatList=chatList)
         
         
