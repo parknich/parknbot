@@ -52,7 +52,7 @@ async def update_chat(user, content, platform):
         if debug:
             print(f'Sent chat message to server')
     except requests.exceptions.RequestException as e:
-        print(f'Failed to send chat message to server')
+        print(f'Failed to send chat message to server: {e}')
 
 async def update_queue_list():
     # Send a POST request with the current queueList as a JSON array to the specified endpoint
