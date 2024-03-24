@@ -123,7 +123,7 @@ async def on_comment(event: CommentEvent) -> None:
     message = event.comment
     fulltiktokmessage = '[in "{channel}"] {user}: {message}'
     log(fulltiktokmessage)
-    update_chat(user, message, 'TikTok')
+    await update_chat(user, message, 'TikTok')
 
 #@tiktokClient.on(SocialEvent)
 #async def on_social_event(event: SocialEvent):
@@ -242,7 +242,7 @@ async def main():
             fullmessageformatted=fullmessage.format(channel=channel, timestamp=messagetime, user=author, message=content)
             # Print the contents of our message to console and chatlog.txt...
             log(fullmessageformatted)
-            update_chat(author, content, 'Twitch')
+            await update_chat(author, content, 'Twitch')
 
             # Since we have commands and are overriding the default `event_message`
             # We must let the bot know we want to handle and invoke our commands...
