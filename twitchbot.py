@@ -294,7 +294,7 @@ async def main():
             fullmessageformatted=fullmessage.format(channel=channel, timestamp=messagetime, user=author, message=content)
             # Print the contents of our message to console and chatlog.txt...
             log(fullmessageformatted)
-            await update_chat(author, content, 'Twitch', color, badges, )
+            await update_chat(author, content, 'twitchIdent', color, badges, )
 
             # Since we have commands and are overriding the default `event_message`
             # We must let the bot know we want to handle and invoke our commands...
