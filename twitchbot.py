@@ -35,8 +35,10 @@ def splitArgs(input_string):
     else:
         return None  # Handle the case where the string is empty
 
-async def update_chat(user, content, platform):
+async def update_chat(user, content, color, badges, platform):
     global chat
+    print("badges: " + badges)
+    print("color: " + color)
     msg = f'[{platform}] {user}: {content}'
     chat.append(msg)
     if len(chat) > 10:
@@ -238,11 +240,13 @@ async def main():
             content = message.content
             messagetime = message.timestamp
             channel = message.channel.name
+            badges = message.author.badges
+            color = message.author.color
             fullmessage = '[in "{channel}"] ({timestamp}) {user}: {message}'
             fullmessageformatted=fullmessage.format(channel=channel, timestamp=messagetime, user=author, message=content)
             # Print the contents of our message to console and chatlog.txt...
             log(fullmessageformatted)
-            await update_chat(author, content, 'Twitch')
+            await update_chat(author, content, color, badges, 'Twitch' )
 
             # Since we have commands and are overriding the default `event_message`
             # We must let the bot know we want to handle and invoke our commands...
