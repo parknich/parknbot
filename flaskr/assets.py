@@ -7,7 +7,7 @@ from flaskr.auth import login_required
 from flaskr.db import get_db
 
 import json
-bp = Blueprint('queue', __name__)
+bp = Blueprint('assets', __name__)
 
 # Pages
 @bp.route('/assets/<path:path>', methods=('GET', 'POST'))
