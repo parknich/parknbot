@@ -50,7 +50,7 @@ async def update_chat(user, content, platform, color=str(), badges=dict()):
                 if key == 'subscriber':
                     badgesIdentifierList[key] = f'{badgesIdentifierList[key]}{badges[key]}'
                 msg =' ' + badgesIdentifierList[key] + msg
-        msg = color + ' ' + msg
+        msg = str(color) + ' ' + msg
         
     chat.append(msg)
     if len(chat) > 10:
