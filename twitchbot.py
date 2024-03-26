@@ -47,10 +47,12 @@ async def update_chat(user, content, platform, color=str(), badges=dict()):
     if badges:
         for key in badges:
             if key in badgesIdentifierList:
+                print('key: ' + badgesIdentifierList[key])
                 if key == 'subscriber':
                     badgesIdentifierList[key] = f'{badgesIdentifierList[key]}{badges[key]}'
+                print('current msg: ' + msg)
                 msg =' ' + badgesIdentifierList[key] + msg
-        msg = str(color) + ' ' + msg
+        # msg = str(color) + ' ' + msg
         
     chat.append(msg)
     if len(chat) > 10:
@@ -58,7 +60,7 @@ async def update_chat(user, content, platform, color=str(), badges=dict()):
     for message in chat:
         print(message)
     endpoint = 'http://127.0.0.1:80/dash/obs/chat'
-    payload = {'chat': chat, 'badges': badges}
+    payload = {'chat': chat}
     print(str(payload))
     try:
         response = requests.post(endpoint, json=payload)
