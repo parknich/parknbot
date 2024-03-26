@@ -5,11 +5,11 @@ TWITCH_API_URL = "https://api.twitch.tv/helix"
 BADGES_ENDPOINT = "/chat/badges"
 
 # Twitch API credentials
-CLIENT_ID = config.clientid
-CLIENT_SECRET = config.clientsecret
+CLIENT_ID = config2.clientid
+CLIENT_SECRET = config2.clientsecret
 
 # OAuth token
-OAUTH_TOKEN = config.parknich_access_token
+OAUTH_TOKEN = config2.parknich_access_token
 
 # Channel username for which you want to fetch badges
 channel_username = "hubalubalu"
