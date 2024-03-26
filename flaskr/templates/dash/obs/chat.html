@@ -53,39 +53,42 @@
       });
     }
 
-    // Function to replace identifiers with images and apply color to name
-    function replaceIdentifiers(message) {
-      // Get the map with dynamically set values
-      var badgeUrlsMap = setMapValues();
-      
-      // Iterate over each entry in the badgeUrlsMap
-      badgeUrlsMap.forEach(function(url, identifier) {
-        // Replace each identifier with the HTML image element
-        var regex = new RegExp(identifier, 'g'); // Create a regular expression to match the identifier globally
-        message = message.replace(regex, '<img src="' + url + '" style="width: 18px; height: 18px;">');
-      });
+// Function to replace identifiers with images and apply color to name
+function replaceIdentifiers(message) {
+  // Get the map with dynamically set values
+  var badgeUrlsMap = setMapValues();
+  
+  // Iterate over each entry in the badgeUrlsMap
+  badgeUrlsMap.forEach(function(url, identifier) {
+    // Replace each identifier with the HTML image element
+    var regex = new RegExp(identifier, 'g'); // Create a regular expression to match the identifier globally
+    message = message.replace(regex, '<img src="' + url + '" style="width: 18px; height: 18px;">');
+  });
 
-      // Search for a hex color code preceded by a hash symbol (#) in the message
-      var regexColor = /#[0-9a-fA-F]{3,6}\b/; // Regular expression to match a hex color code
-      
-      // Check if a hex code is found in the message
-      var colorMatch = message.match(regexColor);
-      if (colorMatch) {
-        // If a hex code is found, remove it from the message
-        message = message.replace(colorMatch[0], ''); // Remove the hex color code
-      }
+  // Search for a hex color code preceded by a hash symbol (#) in the message
+  var regexColor = /#[0-9a-fA-F]{3,6}\b/; // Regular expression to match a hex color code
+  
+  // Check if a hex code is found in the message
+  var colorMatch = message.match(regexColor);
+  var namePart = message;
+  if (colorMatch) {
+    // If a hex code is found, remove it from the name part
+    namePart = namePart.replace(colorMatch[0], ''); // Remove the hex color code from the name part
+  }
 
-      // Search for the colon (:) in the message
-      var colonIndex = message.indexOf(':');
-      if (colonIndex !== -1) {
-        // If a colon is found, split the message into name and rest parts
-        var namePart = message.substring(0, colonIndex); // Get the part before the colon as the name
-        var restPart = message.substring(colonIndex + 1); // Get the part after the colon
-        message = '<span style="color: ' + colorMatch[0] + ';">' + namePart + '</span>: ' + restPart; // Apply the color to the name part
-      }
+  // Search for the colon (:) in the name part
+  var colonIndex = namePart.indexOf(':');
+  if (colonIndex !== -1) {
+    // If a colon is found, split the name part into name and rest parts
+    var name = namePart.substring(0, colonIndex); // Get the part before the colon as the name
+    var restPart = namePart.substring(colonIndex + 1); // Get the part after the colon
+    namePart = '<span style="color: ' + colorMatch[0] + ';">' + name + '</span>'; // Apply the color to the name part
+    message = namePart + ':' + restPart; // Combine the colored name part with the rest of the message
+  }
 
-      return message;
-    }
+  return message;
+}
+
 
 
 
