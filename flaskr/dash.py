@@ -76,9 +76,10 @@ def responses():
 @bp.route('/dash/obs/chat', methods=('GET', 'POST'))
 def chat():
     global chatList
-
+    
     if request.method == 'POST':
         chatList = request.json.get('chat', [])
+        badges = request.json.get('badges', [])
         
     
     if request.method == 'GET' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -87,5 +88,5 @@ def chat():
         
     
     db = get_db()
-    return render_template('dash/obs/chat.html', chatList=chatList)
+    return render_template('dash/obs/chat.html', chatList=chatList, badges=badges)
 

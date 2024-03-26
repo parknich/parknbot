@@ -43,17 +43,19 @@ async def update_chat(user, content, color, badges, platform):
     moderator = 'moderator'
     glhfpledge = 'glhf-pledge'
     sub = 'subscriber'
-    badgesList = ['moderator', 'subscriber', 'glhf-pledge']
-    userBadgesString = ''
-    
-    msg = f'[{platform}] {user}: {content}'
-    for key in badgesList:
-        if key in badges:
-            value = badges[key]
-            userBadgesString = userBadgesString + key
-            print(f"{key} key is in {user}'s badges, value: {value}")
+    badgesIdentifierList = {
+        "moderator": "modBadgeIdent",
+        "subscriber": "subBadgeIdent",
+        "glhf-pledge": "glhfBadgeIdent"
+    }    
+    msg = f' [{platform}] {user}: {content}'
 
-            
+    for key in badges:
+        if key in badgesIdentifierList:
+            if key == 'subscriber':
+                badgesIdentifierList[key] = f'{badgesIdentifierList[key]}{badges[key]}'
+            msg =' ' + badgesIdentifierList[key] + msg
+    msg = color + ' ' + msg
         
     chat.append(msg)
     if len(chat) > 10:
