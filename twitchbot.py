@@ -43,6 +43,7 @@ async def update_chat(user, content, platform, color=str(), badges=dict()):
         "subscriber": "subBadgeIdent",
         "glhf-pledge": "glhfBadgeIdent"
     }    
+    print(badges)
     msg = f' [{platform}] {user}: {content}'
     if badges:
         print('badges not empty')
