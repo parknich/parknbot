@@ -52,20 +52,33 @@
       });
     }
 
-    // Function to replace badge identifiers with images
-    function replaceBadgeIdentifiers(message) {
+    // Function to replace identifiers with images and apply color
+    function replaceIdentifiers(message) {
       // Get the map with dynamically set values
       var badgeUrlsMap = setMapValues();
       
       // Iterate over each entry in the badgeUrlsMap
       badgeUrlsMap.forEach(function(url, identifier) {
-        // Replace each badge identifier with the HTML image element
+        // Replace each identifier with the HTML image element
         var regex = new RegExp(identifier, 'g'); // Create a regular expression to match the identifier globally
         message = message.replace(regex, '<img src="' + url + '" style="width: 18px; height: 18px;">');
       });
 
+      // Search for a hex code after the identifiers
+      var regexColor = /\b#(?:[0-9a-fA-F]{3}){1,2}\b/; // Regular expression to match a hex color code
+      
+      // Check if a hex code is found in the message
+      var colorMatch = message.match(regexColor);
+      if (colorMatch) {
+        // If a hex code is found, apply the color to the message
+        var color = colorMatch[0]; // Get the matched hex code
+        message = message.replace(color, ''); // Remove the hex code from the message
+        message = '<span style="color: ' + color + ';">' + message + '</span>'; // Apply the color to the message
+      }
+
       return message;
     }
+
 
     // Initialize
     setMapValues();
