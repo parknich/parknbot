@@ -51,7 +51,7 @@ async def update_chat(user, content, platform, color=str(), badges=dict()):
                 if key == 'subscriber':
                     badgesIdentifierList[key] = f'{badgesIdentifierList[key]}{badges[key]}'
                 print('current msg: ' + msg)
-                msg =' ' + badgesIdentifierList[key] + msg
+                #msg =' ' + badgesIdentifierList[key] + msg
         # msg = str(color) + ' ' + msg
         
     chat.append(msg)
