@@ -6,7 +6,7 @@ from TikTokLive import TikTokLiveClient
 from TikTokLive.events import ConnectEvent, CommentEvent, SocialEvent
 from TikTokLive.client.logger import LogLevel
 import requests
-import config
+import lib.config as config
 import httpx
 import logging
 import websockets
@@ -235,7 +235,7 @@ async def main():
             print(f"Logged in as | {self.nick}")
             print(f"User id is | {self.user_id}")
             channel = TwitchBot.get_channel('Hubalubalu')
-            
+            TwitchBot.fetch_global_chat_badges()
             for channel in channel_list:
                 c = TwitchBot.get_channel(channel)
                 await c.send(f'parknbot v0.7DEV connected to {c}!')

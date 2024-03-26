@@ -10,6 +10,23 @@
 
   <script>
     var chat = ["Joined the chatroom"];
+    
+    // Define a function to set map values dynamically
+    function setMapValues() {
+      // Map to store badge identifiers and their corresponding URLs
+      var badgeUrlsMap = new Map();
+      
+      // Add entries to the map based on some logic or calculation
+      badgeUrlsMap.set('modBadgeIdent', 'https://static-cdn.jtvnw.net/badges/v1/3267646d-33f0-4b17-b3df-f923a41db1d0/3');
+      badgeUrlsMap.set('glhfBadgeIdent', 'https://static-cdn.jtvnw.net/badges/v1/3158e758-3cb4-43c5-94b3-7639810451c5/3');
+      badgeUrlsMap.set('subBadgeIdent1', 'https://static-cdn.jtvnw.net/badges/v1/3dd78eac-4282-4197-8750-919854d65ad9/3');
+      badgeUrlsMap.set('subBadgeIdent2', 'https://static-cdn.jtvnw.net/badges/v1/eb030a56-a932-4200-8788-c31f05477016/3');
+      badgeUrlsMap.set('subBadgeIdent3', 'https://static-cdn.jtvnw.net/badges/v1/40344a68-02b8-42a7-bf5b-3e0864530c1e/3');
+      badgeUrlsMap.set('subBadgeIdent6', 'https://static-cdn.jtvnw.net/badges/v1/b8c388f5-f47d-46d2-8b74-dbfbedec93ce/3');
+      
+      return badgeUrlsMap;
+    }
+
     function updateChatArray() {
       // Make an AJAX request to get the updated chat array
       $.ajax({
@@ -17,10 +34,18 @@
         method: 'GET',
         dataType: 'json',
         success: function(response) {
-          var chat = response.chatList;
+          var chatList = response.chatList;
 
-          // Update the chat paragraph with the contents of the chat array
-          $('#chat').html(chat.join('<br>'));
+          // Iterate over each message in the chat array
+          for (var i = 0; i < chatList.length; i++) {
+            var message = chatList[i];
+            var replacedMessage = replaceBadgeIdentifiers(message);
+            chatList[i] = replacedMessage;
+          }
+
+          // Update the chat paragraph with the contents of the modified chat array
+          $('#chat').html(chatList.join('<br>'));
+          
         },
         error: function(error) {
           console.error('Error updating chat:', error);
@@ -28,7 +53,23 @@
       });
     }
 
-    // Call the function initially
+    // Function to replace badge identifiers with images
+    function replaceBadgeIdentifiers(message) {
+      // Get the map with dynamically set values
+      var badgeUrlsMap = setMapValues();
+      
+      // Iterate over each entry in the badgeUrlsMap
+      badgeUrlsMap.forEach(function(url, identifier) {
+        // Replace each badge identifier with the HTML image element
+        var regex = new RegExp(identifier, 'g'); // Create a regular expression to match the identifier globally
+        message = message.replace(regex, '<img src="' + url + '">');
+      });
+
+      return message;
+    }
+
+    // Initialize
+    setMapValues();
     updateChatArray();
 
     // You might want to set up a timer to periodically update the chat

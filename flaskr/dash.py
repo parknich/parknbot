@@ -5,6 +5,8 @@ from werkzeug.exceptions import abort
 
 from flaskr.auth import login_required
 from flaskr.db import get_db
+import lib.twitchbadges as twitchbadges
+import json
 bp = Blueprint('queue', __name__)
 
 # Initialize a global variable to store chatListUser data
@@ -13,6 +15,9 @@ global_response = ['No response']
 global userSlots
 userSlots = int()
 global chatList
+global badges
+badges = dict()
+badges = str()
 chatList = list()
 
 # Pages
@@ -76,11 +81,12 @@ def responses():
 @bp.route('/dash/obs/chat', methods=('GET', 'POST'))
 def chat():
     global chatList
-    
+    global badges
 
+    badges = json.loads(twitchbadges.get_badge_json())
     if request.method == 'POST':
         chatList = request.json.get('chat', [])
-        
+
     
     if request.method == 'GET' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return jsonify(chatList=chatList)
@@ -88,5 +94,5 @@ def chat():
         
     
     db = get_db()
-    return render_template('dash/obs/chat.html', chatList=chatList)
+    return render_template('dash/obs/chat.html', chatList=chatList, badges=badges)
 
