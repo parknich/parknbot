@@ -53,7 +53,7 @@
       });
     }
 
-// Function to replace identifiers with images and apply color to name
+// Function to replace identifiers with images and apply color to usernames
 function replaceIdentifiers(message) {
   // Get the map with dynamically set values
   var badgeUrlsMap = setMapValues();
@@ -70,20 +70,11 @@ function replaceIdentifiers(message) {
   
   // Check if a hex code is found in the message
   var colorMatch = message.match(regexColor);
-  var namePart = message;
   if (colorMatch) {
-    // If a hex code is found, remove it from the name part
-    namePart = namePart.replace(colorMatch[0], ''); // Remove the hex color code from the name part
-  }
-
-  // Search for the colon (:) in the name part
-  var colonIndex = namePart.indexOf(':');
-  if (colonIndex !== -1) {
-    // If a colon is found, split the name part into name and rest parts
-    var name = namePart.substring(0, colonIndex); // Get the part before the colon as the name
-    var restPart = namePart.substring(colonIndex + 1); // Get the part after the colon
-    namePart = '<span style="color: ' + colorMatch[0] + ';">' + name + '</span>'; // Apply the color to the name part
-    message = namePart + ':' + restPart; // Combine the colored name part with the rest of the message
+    // If a hex code is found, apply the color to the username part of the message
+    var color = colorMatch[0]; // Get the matched hex code
+    message = message.replace(color, ''); // Remove the hex code from the message
+    message = message.replace(/(\b[A-Za-z0-9_]+\b)(?=\s*?:)/g, '<span style="color: ' + color + ';">$1</span>'); // Apply the color to the username
   }
 
   return message;
