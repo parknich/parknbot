@@ -3,7 +3,6 @@ header {
     text-align: center;
     background-color: #2c3e50; /* Clean blue-gray background color */
     color: #ecf0f1; /* Clean light text color for contrast */
-    opacity: 0.0;
     padding: 1px;
     font-size: 34px; /* Set the font size for the header */
   }
@@ -13,9 +12,9 @@ header {
     margin: 20px auto; /* Center the box */
     padding: 10px; /* Adjust the padding */
     font-size: 18px; /* Set your desired font size for the box */
-    color: #ecf0f1; /* White text color */
-    border: 3px solid #ecf0f1; /* Increased border width and white color for contrast */
-    background-color: #2c3e50; /* Clean blue-gray background color */
+    color: #ecf0f100; /* White text color */
+    border: 3px solid #ecf0f100; /* Increased border width and white color for contrast */
+    background-color: #2c3e5000; /* Clean blue-gray background color */
     width: 400px; /* Set your desired fixed width */
     height: auto; /* Allow the height to adjust based on content */
     border-top-left-radius: 10px; /* Rounded corners */
@@ -25,7 +24,6 @@ header {
     box-sizing: border-box; /* Include padding and border in the box's total width and height */
     overflow: hidden; /* Ensure rounded corners are visible */
     text-align: center; /* Center text within the content block */
-    opacity: 0.0;
   }
   
   /* Style for text within content block */

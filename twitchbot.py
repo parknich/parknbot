@@ -40,17 +40,29 @@ async def update_chat(user, content, color, badges, platform):
     global chat
     print("badges: " + str(badges))
     print("color: " + color)
-    badgesJSON = json.dumps(badges)
-    badgesJSON = json.loads(badgesJSON)
-    print(badgesJSON)
+    moderator = 'moderator'
+    glhfpledge = 'glhf-pledge'
+    sub = 'subscriber'
+    badgesList = ['moderator', 'subscriber', 'glhf-pledge']
+    userBadgesString = ''
+    
     msg = f'[{platform}] {user}: {content}'
+    for key in badgesList:
+        if key in badges:
+            value = badges[key]
+            userBadgesString = userBadgesString + key
+            print(f"{key} key is in {user}'s badges, value: {value}")
+
+            
+        
     chat.append(msg)
     if len(chat) > 10:
         chat = chat[1:]
     for message in chat:
         print(message)
     endpoint = 'http://127.0.0.1:80/dash/obs/chat'
-    payload = {'chat': chat}
+    payload = {'chat': chat, 'badges': badges}
+    print(str(payload))
     try:
         response = requests.post(endpoint, json=payload)
         response.raise_for_status()
