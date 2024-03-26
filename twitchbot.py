@@ -218,8 +218,8 @@ async def main():
             
             for channel in channel_list:
                 c = TwitchBot.get_channel(channel)
-                await c.send(f'parknbot v0.5DEV connected to {c}!')
-            print('parknBot v0.5Dev loaded')
+                await c.send(f'parknbot v0.7DEV connected to {c}!')
+            print('parknBot v0.7Dev loaded')
         async def event_channel_join_failure(self, channel: str):
             return await super().event_channel_join_failure(channel)
         async def event_join(self, channel: Channel, user: User):
