@@ -53,35 +53,35 @@
       });
     }
 
-      // Function to replace identifiers with images and apply color to usernames
-      function replaceIdentifiers(message) {
-        // Get the map with dynamically set values
-        var badgeUrlsMap = setMapValues();
-        
-        // Iterate over each entry in the badgeUrlsMap
-        badgeUrlsMap.forEach(function(url, identifier) {
-          // Replace each identifier with the HTML image element
-          var regex = new RegExp(identifier, 'g'); // Create a regular expression to match the identifier globally
-          message = message.replace(regex, '<img src="' + url + '" style="width: 18px; height: 18px;">');
+    // Function to replace identifiers with images and apply color to usernames
+    function replaceIdentifiers(message) {
+      // Get the map with dynamically set values
+      var badgeUrlsMap = setMapValues();
+      
+      // Iterate over each entry in the badgeUrlsMap
+      badgeUrlsMap.forEach(function(url, identifier) {
+        // Replace each identifier with the HTML image element
+        var regex = new RegExp(identifier, 'g'); // Create a regular expression to match the identifier globally
+        message = message.replace(regex, '<img src="' + url + '" style="width: 18px; height: 18px;">');
+      });
+
+      // Search for a hex color code preceded by a hash symbol (#) in the message
+      var regexColor = /#[0-9a-fA-F]{3,6}\b(?!\s*;)/g; // Regular expression to match a hex color code
+      
+      // Check if a hex code is found in the message
+      var colorMatches = message.match(regexColor);
+      if (colorMatches) {
+        // If a hex code is found, apply the color to the username part of the message
+        colorMatches.forEach(function(color) {
+          message = message.replace(color, ''); // Remove the hex code from the message
         });
-
-        // Search for a hex color code preceded by a hash symbol (#) in the message
-        var regexColor = /#[0-9a-fA-F]{3,6}\b(?!\s*;)/g; // Regular expression to match a hex color code
-        
-        // Check if a hex code is found in the message
-        var colorMatches = message.match(regexColor);
-        if (colorMatches) {
-          // If a hex code is found, apply the color to the username part of the message
-          colorMatches.forEach(function(color) {
-            message = message.replace(color, ''); // Remove the hex code from the message
-          });
-          message = message.replace(/(\b[A-Za-z0-9_]+\b)(?=\s*?:)/g, function(match) {
-            return isURL(match) ? match : '<span class="username" style="color: ' + colorMatches[0] + ';">' + match + '</span>';
-          }); // Apply the color to the username if it's not a URL
-        }
-
-        return message;
+        message = message.replace(/(\])(.*?)(:)/, function(match, p1, p2, p3) {
+          return p1 + '<span class="username" style="color: ' + colorMatches[0] + ';">' + p2 + '</span>' + p3;
+        }); // Apply the color to the username from the first "]" bracket to the first colon ":"
       }
+
+      return message;
+    }
 
     // Function to check if a string is a URL
     function isURL(str) {
