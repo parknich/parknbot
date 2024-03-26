@@ -11,6 +11,7 @@ import httpx
 import logging
 import websockets
 import json
+import random
 #TODO: Make it so the first 4 people in queue are considered to be playing, then make it dynamically adjustable via a command
 debug = True
 global chat
@@ -36,46 +37,70 @@ def splitArgs(input_string):
     else:
         return None  # Handle the case where the string is empty
 
-async def update_chat(user, content, platform, color=str(), badges=dict()):
+user_colors = {}
+color_codes = {
+    "red": "FF0000",
+    "blue": "0000FF",
+    "green": "008000",
+    "firebrick": "B22222",
+    "coral": "FF7F50",
+    "yellow_green": "9ACD32",
+    "orange_red": "FF4500",
+    "sea_green": "2E8B57",
+    "goldenrod": "DAA520",
+    "chocolate": "D2691E",
+    "cadet_blue": "5F9EA0",
+    "dodger_blue": "1E90FF",
+    "hot_pink": "FF69B4",
+    "blue_violet": "8A2BE2",
+    "spring_green": "00FF7F"
+}
+
+async def update_chat(user, content, platform, color='', badges=dict()):
     global chat
     badgesIdentifierList = {
         "moderator": "modBadgeIdent",
         "subscriber": "subBadgeIdent",
         "glhf-pledge": "glhfBadgeIdent"
     }    
-    print(str(badges))
-    msg = f' [{platform}] {user}: {content}'
+    
+    # Check if user already has a saved color or if color is provided by Twitch API
+    if user not in user_colors and not color:
+        # Assign a random color to the user
+        user_colors[user] = random.choice(list(color_codes.values()))
+    
+    # Format the message with the user's color
+    if color:
+        msg = f'{color} [{platform}] {user}: {content}'
+    else:
+        msg = f'#{user_colors[user]} [{platform}] {user}: {content}'
+    
+    # Add badge information if available
     if badges:
-        #print('badges not empty')
         for key in badges:
-            #print('before if key')
             if key in badgesIdentifierList:
-                #print('key: ' + badgesIdentifierList[key])
                 if key == 'subscriber':
                     badgesIdentifierList[key] = f'{badgesIdentifierList[key]}{badges[key]}'
-                #print('current msg: ' + msg)
-                msg =' ' + badgesIdentifierList[key] + msg
-            #else:
-                #print(f'{key} key not in badges identifier lsit')
-        
-    else:
-        print('badges empty')
-    msg = str(color) + ' ' + msg
-    print(f'str color {str(color)}')
-    print(f'color:  {color}')
+                msg = f'{badgesIdentifierList[key]} {msg}'
+    
     chat.append(msg)
+    
+    # Limit chat history to 10 messages
     if len(chat) > 10:
         chat = chat[1:]
+    
+    # Print chat messages to console
     for message in chat:
         print(message)
+    
+    # Send chat message to server
     endpoint = 'http://127.0.0.1:80/dash/obs/chat'
     payload = {'chat': chat}
-    print(str(payload))
     try:
         response = requests.post(endpoint, json=payload)
         response.raise_for_status()
         if debug:
-            print(f'Sent chat message to server')
+            print('Sent chat message to server')
     except requests.exceptions.RequestException as e:
         print(f'Failed to send chat message to server: {e}')
 
