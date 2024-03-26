@@ -1,5 +1,5 @@
 import requests
-import config
+import config2
 # Twitch API endpoint URLs
 TWITCH_API_URL = "https://api.twitch.tv/helix"
 BADGES_ENDPOINT = "/chat/badges"

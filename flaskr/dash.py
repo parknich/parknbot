@@ -5,7 +5,7 @@ from werkzeug.exceptions import abort
 
 from flaskr.auth import login_required
 from flaskr.db import get_db
-import lib.twitchbadges as twitchbadges
+import lib2.twitchbadges2 as twitchbadges
 import json
 bp = Blueprint('queue', __name__)
 
