@@ -37,7 +37,7 @@ def splitArgs(input_string):
 
 async def update_chat(user, content, color, badges, platform):
     global chat
-    print("badges: " + badges)
+    print("badges: " + str(badges))
     print("color: " + color)
     msg = f'[{platform}] {user}: {content}'
     chat.append(msg)
