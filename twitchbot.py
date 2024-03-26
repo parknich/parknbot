@@ -36,26 +36,21 @@ def splitArgs(input_string):
     else:
         return None  # Handle the case where the string is empty
 
-async def update_chat(user, content, color, badges, platform):
+async def update_chat(user, content, platform, color=str(), badges=dict()):
     global chat
-    print("badges: " + str(badges))
-    print("color: " + color)
-    moderator = 'moderator'
-    glhfpledge = 'glhf-pledge'
-    sub = 'subscriber'
     badgesIdentifierList = {
         "moderator": "modBadgeIdent",
         "subscriber": "subBadgeIdent",
         "glhf-pledge": "glhfBadgeIdent"
     }    
     msg = f' [{platform}] {user}: {content}'
-
-    for key in badges:
-        if key in badgesIdentifierList:
-            if key == 'subscriber':
-                badgesIdentifierList[key] = f'{badgesIdentifierList[key]}{badges[key]}'
-            msg =' ' + badgesIdentifierList[key] + msg
-    msg = color + ' ' + msg
+    if badges:
+        for key in badges:
+            if key in badgesIdentifierList:
+                if key == 'subscriber':
+                    badgesIdentifierList[key] = f'{badgesIdentifierList[key]}{badges[key]}'
+                msg =' ' + badgesIdentifierList[key] + msg
+        msg = color + ' ' + msg
         
     chat.append(msg)
     if len(chat) > 10:
