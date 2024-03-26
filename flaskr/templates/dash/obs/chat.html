@@ -53,7 +53,7 @@
       });
     }
 
-    // Function to replace identifiers with images and apply color
+    // Function to replace identifiers with images and apply color to name
     function replaceIdentifiers(message) {
       // Get the map with dynamically set values
       var badgeUrlsMap = setMapValues();
@@ -65,16 +65,20 @@
         message = message.replace(regex, '<img src="' + url + '" style="width: 18px; height: 18px;">');
       });
 
-      // Search for a hex code after the identifiers
+      // Search for a hex color code preceded by a hash symbol (#) in the message
       var regexColor = /#[0-9a-fA-F]{3,6}\b/; // Regular expression to match a hex color code
-
+      
       // Check if a hex code is found in the message
       var colorMatch = message.match(regexColor);
       if (colorMatch) {
-        // If a hex code is found, apply the color to the message
+        // If a hex code is found, apply the color to the name part of the message
         var color = colorMatch[0]; // Get the matched hex code
-        message = message.replace(color, ''); // Remove the hex code from the message
-        message = '<span style="color: ' + color + ';">' + message + '</span>'; // Apply the color to the message
+        var parts = message.split(':'); // Split the message into parts based on colon (:)
+        if (parts.length > 1) {
+          var namePart = parts[0]; // Get the part before the colon as the name
+          var restPart = parts.slice(1).join(':'); // Get the part after the colon
+          message = '<span style="color: ' + color + ';">' + namePart + '</span>: ' + restPart; // Apply the color to the name part
+        }
       }
 
       return message;
