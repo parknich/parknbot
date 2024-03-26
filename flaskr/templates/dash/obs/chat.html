@@ -75,15 +75,19 @@
         colorMatches.forEach(function(color) {
           message = message.replace(color, ''); // Remove the hex code from the message
         });
-        message = message.replace(/(\b[A-Za-z0-9_]+\b)(?=\s*?:)/g, '<span class="username" style="color: ' + colorMatches[0] + ';">$1</span>'); // Apply the color to the username
+        message = message.replace(/(\b[A-Za-z0-9_]+\b)(?=\s*?:)/g, function(match) {
+          return isURL(match) ? match : '<span class="username" style="color: ' + colorMatches[0] + ';">' + match + '</span>';
+        }); // Apply the color to the username if it's not a URL
       }
 
       return message;
     }
 
-
-
-
+    // Function to check if a string is a URL
+    function isURL(str) {
+      var pattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+      return pattern.test(str);
+    }
 
 
     // Initialize
