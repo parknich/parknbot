@@ -71,18 +71,22 @@
       // Check if a hex code is found in the message
       var colorMatch = message.match(regexColor);
       if (colorMatch) {
-        // If a hex code is found, apply the color to the name part of the message
-        var color = colorMatch[0]; // Get the matched hex code
-        var parts = message.split(':'); // Split the message into parts based on colon (:)
-        if (parts.length > 1) {
-          var namePart = parts[0]; // Get the part before the colon as the name
-          var restPart = parts.slice(1).join(':'); // Get the part after the colon
-          message = '<span style="color: ' + color + ';">' + namePart + '</span>: ' + restPart; // Apply the color to the name part
-        }
+        // If a hex code is found, remove it from the message
+        message = message.replace(colorMatch[0], ''); // Remove the hex color code
+      }
+
+      // Search for the colon (:) in the message
+      var colonIndex = message.indexOf(':');
+      if (colonIndex !== -1) {
+        // If a colon is found, split the message into name and rest parts
+        var namePart = message.substring(0, colonIndex); // Get the part before the colon as the name
+        var restPart = message.substring(colonIndex + 1); // Get the part after the colon
+        message = '<span style="color: ' + colorMatch[0] + ';">' + namePart + '</span>: ' + restPart; // Apply the color to the name part
       }
 
       return message;
     }
+
 
 
     // Initialize
