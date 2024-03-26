@@ -5,7 +5,6 @@ from werkzeug.exceptions import abort
 
 from flaskr.auth import login_required
 from flaskr.db import get_db
-import lib2.twitchbadges2 as twitchbadges
 import json
 bp = Blueprint('queue', __name__)
 
@@ -15,8 +14,6 @@ global_response = ['No response']
 global userSlots
 userSlots = int()
 global chatList
-global badges
-badges = dict()
 badges = str()
 chatList = list()
 
@@ -81,9 +78,6 @@ def responses():
 @bp.route('/dash/obs/chat', methods=('GET', 'POST'))
 def chat():
     global chatList
-    global badges
-
-    badges = json.loads(twitchbadges.get_badge_json())
     if request.method == 'POST':
         chatList = request.json.get('chat', [])
 
@@ -94,5 +88,5 @@ def chat():
         
     
     db = get_db()
-    return render_template('dash/obs/chat.html', chatList=chatList, badges=badges)
+    return render_template('dash/obs/chat.html', chatList=chatList)
 
