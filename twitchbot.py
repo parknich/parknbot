@@ -10,6 +10,7 @@ import config
 import httpx
 import logging
 import websockets
+import json
 #TODO: Make it so the first 4 people in queue are considered to be playing, then make it dynamically adjustable via a command
 debug = True
 global chat
@@ -39,6 +40,9 @@ async def update_chat(user, content, color, badges, platform):
     global chat
     print("badges: " + str(badges))
     print("color: " + color)
+    badgesJSON = json.dumps(badges)
+    badgesJSON = json.loads(badgesJSON)
+    print(badgesJSON)
     msg = f'[{platform}] {user}: {content}'
     chat.append(msg)
     if len(chat) > 10:
