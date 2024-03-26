@@ -88,5 +88,5 @@ def chat():
         
     
     db = get_db()
-    return render_template('dash/obs/chat.html', chatList=chatList, badges=badges)
+    return render_template('dash/obs/chat.html', chatList=chatList)
 
