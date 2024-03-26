@@ -46,18 +46,18 @@ async def update_chat(user, content, platform, color=str(), badges=dict()):
     print(str(badges))
     msg = f' [{platform}] {user}: {content}'
     if badges:
-        print('badges not empty')
+        #print('badges not empty')
         for key in badges:
-            print('before if key')
+            #print('before if key')
             if key in badgesIdentifierList:
-                print('key: ' + badgesIdentifierList[key])
+                #print('key: ' + badgesIdentifierList[key])
                 if key == 'subscriber':
                     badgesIdentifierList[key] = f'{badgesIdentifierList[key]}{badges[key]}'
-                print('current msg: ' + msg)
+                #print('current msg: ' + msg)
                 msg =' ' + badgesIdentifierList[key] + msg
-            else:
-                print(f'{key} key not in badges identifier lsit')
-        # msg = str(color) + ' ' + msg
+            #else:
+                #print(f'{key} key not in badges identifier lsit')
+        msg = str(color) + ' ' + msg
     else:
         print('badges empty')
         
@@ -268,7 +268,7 @@ async def main():
             fullmessageformatted=fullmessage.format(channel=channel, timestamp=messagetime, user=author, message=content)
             # Print the contents of our message to console and chatlog.txt...
             log(fullmessageformatted)
-            await update_chat(author, content, color, badges, 'Twitch' )
+            await update_chat(author, content, 'Twitch', color, badges, )
 
             # Since we have commands and are overriding the default `event_message`
             # We must let the bot know we want to handle and invoke our commands...
