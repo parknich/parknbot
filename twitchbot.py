@@ -47,12 +47,15 @@ async def update_chat(user, content, platform, color=str(), badges=dict()):
     if badges:
         print('badges not empty')
         for key in badges:
+            print('before if key')
             if key in badgesIdentifierList:
                 print('key: ' + badgesIdentifierList[key])
                 if key == 'subscriber':
                     badgesIdentifierList[key] = f'{badgesIdentifierList[key]}{badges[key]}'
                 print('current msg: ' + msg)
                 msg =' ' + badgesIdentifierList[key] + msg
+            else:
+                print(f'{key} key not in badges identifier lsit')
         # msg = str(color) + ' ' + msg
     else:
         print('badges empty')
