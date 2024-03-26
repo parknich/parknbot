@@ -176,7 +176,7 @@ async def main():
             message = event.comment
             fulltiktokmessage = '[in "{channel}"] {user}: {message}'
             log(fulltiktokmessage)
-            await update_chat(user, message, 'TikTok')
+            await update_chat(user, message, 'tiktokIdent')
             chan = TwitchBot.get_channel("hubalubalu")
             loop = asyncio.get_event_loop()
             loop.create_task(chan.send(f'[TikTok] {user}: {message}'))
