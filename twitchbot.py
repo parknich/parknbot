@@ -57,10 +57,12 @@ async def update_chat(user, content, platform, color=str(), badges=dict()):
                 msg =' ' + badgesIdentifierList[key] + msg
             #else:
                 #print(f'{key} key not in badges identifier lsit')
-        msg = str(color) + ' ' + msg
+        
     else:
         print('badges empty')
-        
+    msg = str(color) + ' ' + msg
+    print(f'str color {str(color)}')
+    print(f'color:  {color}')
     chat.append(msg)
     if len(chat) > 10:
         chat = chat[1:]
