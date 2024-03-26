@@ -77,9 +77,9 @@ def responses():
 def chat():
     global chatList
     
+
     if request.method == 'POST':
         chatList = request.json.get('chat', [])
-        badges = request.json.get('badges', [])
         
     
     if request.method == 'GET' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
