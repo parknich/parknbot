@@ -62,7 +62,7 @@
       badgeUrlsMap.forEach(function(url, identifier) {
         // Replace each badge identifier with the HTML image element
         var regex = new RegExp(identifier, 'g'); // Create a regular expression to match the identifier globally
-        message = message.replace(regex, '<img src="' + url + '">');
+        message = message.replace(regex, '<img src="' + url + '" style="width: 18px; height: 18px;">');
       });
 
       return message;
