@@ -3,3 +3,7 @@ TikTokLive
 TikTokLive
 twitchio
 flask
+discord.py
+asyncio
+json
+random

@@ -12,6 +12,7 @@ import logging
 import websockets
 import json
 import random
+import discord
 global connected
 #TODO: Make it so the first 4 people in queue are considered to be playing, then make it dynamically adjustable via a command
 debug = True
@@ -150,6 +151,25 @@ userSlots = 3
 
 
 async def main():
+    class DiscordBot():
+        class discordClient(discord.Client):
+            async def on_ready(self):
+                print(f'[DiscordBot] Logged on as {self.user}!')
+        intents = discord.Intents.default()
+        intents.message_content = True
+        client = discordClient(intents=intents)
+                
+        async def sendTikTokLink(self):
+            await self.client.wait_until_ready()
+            channel = self.client.get_channel(id=699715620320706614)  
+            while not self.client.is_closed():
+                await channel.send('Hubalubalu is live on tiktok: https://www.tiktok.com/@hubalubalu/live')
+                
+              
+
+        
+
+
     class TikTokBot():
         # Create the client
         tiktokClient: TikTokLiveClient = TikTokLiveClient(unique_id="@hubalubalu") 
@@ -186,6 +206,7 @@ async def main():
         async def on_disconnect_event(event: DisconnectEvent):
             global connected
             connected=False
+
         #@tiktokClient.on(SocialEvent)
         #async def on_social_event(event: SocialEvent):
         #    event.user.
@@ -237,7 +258,7 @@ async def main():
 
                 # Connect once they become live
                 tiktok_is_live = True
-                
+                await DiscordBot.sendTikTokLink(DiscordBot)
                 while not connected:
                     self.tiktokClient.logger.info("Requested client is live!, connecting")
                     try:
@@ -491,7 +512,7 @@ async def main():
     
     ## Init
 
-    await asyncio.gather(TwitchBot.start(), TikTokBot.check_loop(TikTokBot))
+    await asyncio.gather(TwitchBot.start(), TikTokBot.check_loop(TikTokBot), DiscordBot.client.start(config.discordToken))
 asyncio.run(main())
 # bot.run() is blocking and will stop execution of any below code here until stopped or closed.
 
