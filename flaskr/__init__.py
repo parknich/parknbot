@@ -8,6 +8,9 @@ from . import auth
 from . import news
 from . import dash
 from . import assets
+import ssl
+context = ssl.SSLContext()
+context.load_cert_chain('/etc/letsencrypt/live/parknbot.xyz/fullchain.pem', '/etc/letsencrypt/live/parknbot.xyz/privkey.pem')
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
