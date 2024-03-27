@@ -14,6 +14,8 @@ import websockets
 import json
 import random
 import discord
+import nest_asyncio
+nest_asyncio.apply()
 global connected
 global message_sent
 #TODO: Make it so the first 4 people in queue are considered to be playing, then make it dynamically adjustable via a command
