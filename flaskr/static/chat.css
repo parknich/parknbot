@@ -5,6 +5,7 @@ header {
     color: #ffffff; /* Clean light text color for contrast */
     padding: 1px;
     font-size: 34px; /* Set the font size for the header */
+    font: "Roboto";
   }
   
   /* Style for content block */
