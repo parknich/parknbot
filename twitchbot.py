@@ -245,8 +245,6 @@ async def main():
                         connected = False
                         await asyncio.sleep(10)
                         return
-                else:
-                    connected = True
                 
                 await asyncio.sleep(60)
         
