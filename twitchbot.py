@@ -119,7 +119,7 @@ async def update_chat(user, content, platform, color='', badges=dict()):
 async def update_queue_list():
     # Send a POST request with the current queueList as a JSON array to the specified endpoint
     global userSlots
-    endpoint = 'http://127.0.0.1:80/dash/obs/queue'
+    endpoint = 'http://127.0.0.1:443/dash/obs/queue'
     payload = {'users': queueList, 'userSlots': userSlots}
     try:
         response = requests.post(endpoint, json=payload)
@@ -538,7 +538,7 @@ async def main():
                 
 
     TwitchBot = Bot()
-    await TwitchBot.__ainit__()
+    TwitchBot.loop.run_until_complete(TwitchBot.__ainit__())
     ## Init
 
     await asyncio.gather(TwitchBot.start(), TikTokBot.check_loop(TikTokBot), DiscordBot.client.start(config.discordToken))
