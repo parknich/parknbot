@@ -25,21 +25,25 @@ header {
     box-sizing: border-box; /* Include padding and border in the box's total width and height */
     overflow: hidden; /* Ensure rounded corners are visible */
     text-align: center; /* Center text within the content block */
+    font: "Roboto";
   }
   
   /* Style for text within content block */
   .content p {
     font-size: 24px; /* Set your desired larger font size for the users */
+    font: "Roboto";
   }
   
   #label {
     font-size: 34px;
     padding: 1px;
+    font: "Roboto";
   }
 
   #chat {
     font-size: 18px;
     padding: 0px;
     opacity: 1.0;
+    font: "Roboto";
     text-align: left;
   }
