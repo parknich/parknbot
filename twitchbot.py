@@ -538,7 +538,7 @@ async def main():
                 
 
     TwitchBot = Bot()
-    TwitchBot.loop.run_until_complete(TwitchBot.__ainit__())
+    await TwitchBot.__ainit__()
     ## Init
 
     await asyncio.gather(TwitchBot.start(), TikTokBot.check_loop(TikTokBot), DiscordBot.client.start(config.discordToken))
