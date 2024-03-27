@@ -3,7 +3,7 @@ from twitchio.ext import commands;
 import asyncio
 from twitchio.user import User
 from TikTokLive import TikTokLiveClient
-from TikTokLive.events import ConnectEvent, CommentEvent, SocialEvent
+from TikTokLive.events import ConnectEvent, CommentEvent, SocialEvent, DisconnectEvent, JoinEvent
 from TikTokLive.client.logger import LogLevel
 import requests
 import lib.config as config
@@ -12,6 +12,7 @@ import logging
 import websockets
 import json
 import random
+global connected
 #TODO: Make it so the first 4 people in queue are considered to be playing, then make it dynamically adjustable via a command
 debug = True
 global chat
@@ -181,7 +182,9 @@ async def main():
             loop = asyncio.get_event_loop()
             loop.create_task(chan.send(f'[TikTok] {user}: {message}'))
 
-
+        @tiktokClient.on(DisconnectEvent)
+        async def on_disconnect_event(event: DisconnectEvent):
+            connected=False
         #@tiktokClient.on(SocialEvent)
         #async def on_social_event(event: SocialEvent):
         #    event.user.
@@ -194,7 +197,7 @@ async def main():
 
         async def check_loop(self):
             ## Prep
-            
+            global connected
             # [TikTok] Enable download info
             print(f'[TikTok] Enabling download info')
             self.tiktokClient.logger.setLevel(LogLevel.INFO.value)
@@ -238,6 +241,7 @@ async def main():
                     self.tiktokClient.logger.info("Requested client is live!, connecting")
                     try:
                         await self.tiktokClient.start()
+                        print('started tiktok client')
                         connected = True
                         return
                     except Exception as e:
