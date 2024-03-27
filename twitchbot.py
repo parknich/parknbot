@@ -184,6 +184,7 @@ async def main():
 
         @tiktokClient.on(DisconnectEvent)
         async def on_disconnect_event(event: DisconnectEvent):
+            global connected
             connected=False
         #@tiktokClient.on(SocialEvent)
         #async def on_social_event(event: SocialEvent):
