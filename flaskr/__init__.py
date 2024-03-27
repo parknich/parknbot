@@ -1,7 +1,8 @@
 import os
 
-from flask import Flask
+from flask import Flask, Response, request
 from flask_migrate import Migrate
+import requests
 from . import db
 from . import auth
 from . import news
@@ -33,6 +34,14 @@ def create_app(test_config=None):
     def hello():
         return 'Hello, World!'
         
+    @app.route('/twitch-callback',methods=['GET'])
+    def proxy():
+        if request.method=='GET':
+            resp = requests.get(f'127.0.0.1:4000')
+            excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
+            headers = [(name, value) for (name, value) in     resp.raw.headers.items() if name.lower() not in excluded_headers]
+            response = Response(resp.content, resp.status_code, headers)
+        return response
     app.register_blueprint(auth.bp)
     app.register_blueprint(dash.bp)
     app.register_blueprint(news.bp)

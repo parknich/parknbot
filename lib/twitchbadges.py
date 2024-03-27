@@ -73,3 +73,5 @@ def get_badge_json():
         print(badges_data)  # Debugging: Print the retrieved badges data
     else:
         print("Failed to fetch badges.")
+
+print(__get_channel_id('parknbot'))

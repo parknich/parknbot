@@ -1,5 +1,6 @@
+import twitchio
 from twitchio.channel import Channel
-from twitchio.ext import commands;
+from twitchio.ext import commands, eventsub;
 import asyncio
 from twitchio.user import User
 from TikTokLive import TikTokLiveClient
@@ -21,6 +22,14 @@ global chat
 chat = list()
 # Create the twitch client
 channel_list = ['hubalubalu', 'parknich']
+
+esbot = commands.Bot.from_client_credentials(client_id=config.clientid,
+                                         client_secret=config.clientsecret)
+esclient = eventsub.EventSubClient(esbot,
+                                   webhook_secret=config.webhookSecret,
+                                   callback_route='https://parknbot.xyz/twitch-callback')
+
+
 def iterateFile(file):
     f = open(file, "r")
     for line in f:
@@ -164,7 +173,7 @@ async def main():
             await self.client.wait_until_ready()
             channel = self.client.get_channel(699715620320706614)  
             while not self.client.is_closed():
-                await channel.send('Hubalubalu is live on tiktok: https://www.tiktok.com/@hubalubalu/live')
+                await channel.send('Hey, <@&1222663608559861831> Hubalubalu is live on tiktok: https://www.tiktok.com/@hubalubalu/live')
                 
               
 
@@ -294,6 +303,16 @@ async def main():
                 token=config.access_token, prefix="?", initial_channels=channel_list
             )
 
+                
+        async def __ainit__(self) -> None:
+            self.loop.create_task(esclient.listen(port=4000))
+
+            try:
+                await esclient.subscribe_channel_follows_v2(broadcaster=103187740, moderator=1038983429)
+            except twitchio.HTTPException:
+                pass
+
+        
         async def event_ready(self):
             # Notify us when everything is ready!
             # We are logged in and ready to chat and use commands...
@@ -519,7 +538,7 @@ async def main():
                 
 
     TwitchBot = Bot()
-    
+    TwitchBot.loop.run_until_complete(TwitchBot.__ainit__())
     ## Init
 
     await asyncio.gather(TwitchBot.start(), TikTokBot.check_loop(TikTokBot), DiscordBot.client.start(config.discordToken))
