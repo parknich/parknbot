@@ -3,7 +3,7 @@ from twitchio.ext import commands;
 import asyncio
 from twitchio.user import User
 from TikTokLive import TikTokLiveClient
-from TikTokLive.events import ConnectEvent, CommentEvent, SocialEvent, DisconnectEvent, JoinEvent
+from TikTokLive.events import ConnectEvent, CommentEvent, SocialEvent, DisconnectEvent, JoinEvent, LiveEndEvent
 from TikTokLive.client.logger import LogLevel
 import requests
 import lib.config as config
@@ -14,6 +14,7 @@ import json
 import random
 import discord
 global connected
+global message_sent
 #TODO: Make it so the first 4 people in queue are considered to be playing, then make it dynamically adjustable via a command
 debug = True
 global chat
@@ -207,6 +208,12 @@ async def main():
             global connected
             connected=False
 
+        @tiktokClient.on(LiveEndEvent)
+        async def on_live_end_event(event: LiveEndEvent):
+            global message_sent
+            global connected
+            message_sent=False
+            connected=False
         #@tiktokClient.on(SocialEvent)
         #async def on_social_event(event: SocialEvent):
         #    event.user.
@@ -239,6 +246,7 @@ async def main():
                     # Check if they're live
                     while not await self.tiktokClient.is_live():
                         self.tiktokClient.logger.info("Client is currently not live. Checking again in 60 seconds.")
+                        tiktok_is_live=False
                         connected=False
                         await asyncio.sleep(60)  # Spamming the endpoint will get you blocked
                 except httpx.HTTPError as e:
@@ -254,11 +262,13 @@ async def main():
                     # Catch any other exceptions
                     print(f"An unexpected error occurred: {e}")
                     
-                    
-
+                global message_sent
+                
                 # Connect once they become live
                 tiktok_is_live = True
-                await DiscordBot.sendTikTokLink(DiscordBot)
+                message_sent = True
+                if not message_sent:
+                    await DiscordBot.sendTikTokLink(DiscordBot)
                 while not connected:
                     self.tiktokClient.logger.info("Requested client is live!, connecting")
                     try:
