@@ -106,7 +106,7 @@ async def update_chat(user, content, platform, color='', badges=dict()):
         print(message)
     
     # Send chat message to server
-    endpoint = 'http://127.0.0.1:80/dash/obs/chat'
+    endpoint = 'http://127.0.0.1:443/dash/obs/chat'
     payload = {'chat': chat}
     try:
         response = requests.post(endpoint, json=payload)
