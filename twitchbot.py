@@ -161,7 +161,7 @@ async def main():
                 
         async def sendTikTokLink(self):
             await self.client.wait_until_ready()
-            channel = self.client.get_channel(id=699715620320706614)  
+            channel = self.client.get_channel(id="699715620320706614")  
             while not self.client.is_closed():
                 await channel.send('Hubalubalu is live on tiktok: https://www.tiktok.com/@hubalubalu/live')
                 
