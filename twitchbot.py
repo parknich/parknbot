@@ -174,6 +174,12 @@ async def main():
             channel = self.client.get_channel(699715620320706614)  
             while not self.client.is_closed():
                 await channel.send('Hey, <@&1222663608559861831> Hubalubalu is live on tiktok: https://www.tiktok.com/@hubalubalu/live')
+        async def sendTwitchLink(self):
+            await self.client.wait_until_ready()
+            channel = self.client.get_channel(699715620320706614)  
+            while not self.client.is_closed():
+                await channel.send('Hey, <@&1222663580969599056> Hubalubalu is live on twitch: https://twitch.tv/hubalubalu')
+
                 
               
 
@@ -306,9 +312,9 @@ async def main():
                 
         async def __ainit__(self) -> None:
             self.loop.create_task(esclient.listen(port=4000))
-
+#twitchio.ext.eventsub.event_eventsub_notification_stream_start(event: StreamOnlineData)
             try:
-                await esclient.subscribe_channel_follows_v2(broadcaster=103187740, moderator=1038983429)
+                await esclient.subscribe_channel_stream_start(103187740)
             except twitchio.HTTPException:
                 pass
 
@@ -537,8 +543,18 @@ async def main():
                 
                 
 
+    
+    
     TwitchBot = Bot()
     TwitchBot.loop.run_until_complete(TwitchBot.__ainit__())
+    
+    @esbot.event()
+    async def event_eventsub_notification_stream_start(payload: eventsub.StreamOnlineData) -> None:
+        print('Twitch Stream Started')
+        channel = TwitchBot.get_channel('hubalubalu')
+        await channel.send(f'Hubalubalu is now streaming')
+        await DiscordBot.sendTwitchLink()
+    
     ## Init
 
     await asyncio.gather(TwitchBot.start(), TikTokBot.check_loop(TikTokBot), DiscordBot.client.start(config.discordToken))
