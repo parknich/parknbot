@@ -75,7 +75,8 @@ async def update_chat(user, content, platform, color='', badges=dict()):
     badgesIdentifierList = {
         "moderator": "modBadgeIdent",
         "subscriber": "subBadgeIdent",
-        "glhf-pledge": "glhfBadgeIdent"
+        "glhf-pledge": "glhfBadgeIdent",
+        "vip": "vipBadgeIdent"
     }    
     
     # Check if user already has a saved color or if color is provided by Twitch API
