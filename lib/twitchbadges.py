@@ -74,4 +74,4 @@ def get_badge_json():
     else:
         print("Failed to fetch badges.")
 
-print(__get_channel_id('parknbot'))
+print(__get_channel_id('parknich'))

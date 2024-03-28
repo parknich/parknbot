@@ -14,8 +14,6 @@ import websockets
 import json
 import random
 import discord
-import nest_asyncio
-nest_asyncio.apply()
 global connected
 global message_sent
 #TODO: Make it so the first 4 people in queue are considered to be playing, then make it dynamically adjustable via a command
@@ -549,7 +547,7 @@ async def main():
     
     
     TwitchBot = Bot()
-    TwitchBot.loop.run_until_complete(TwitchBot.__ainit__())
+    await TwitchBot.__ainit__
     
     @esbot.event()
     async def event_eventsub_notification_stream_start(payload: eventsub.StreamOnlineData) -> None:
