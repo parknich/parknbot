@@ -547,7 +547,7 @@ async def main():
     
     
     TwitchBot = Bot()
-    await TwitchBot.__ainit__
+    await TwitchBot.__ainit__()
     
     @esbot.event()
     async def event_eventsub_notification_stream_start(payload: eventsub.StreamOnlineData) -> None:
