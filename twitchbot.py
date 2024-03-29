@@ -16,7 +16,8 @@ import random
 import discord
 global connected
 global message_sent
-#TODO: Make it so the first 4 people in queue are considered to be playing, then make it dynamically adjustable via a command
+#TODO: replace flask with quart
+# use aiohttp
 debug = True
 global chat
 chat = list()
