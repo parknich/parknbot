@@ -215,7 +215,7 @@ async def main():
             fulltiktokmessage = '[in "{channel}"] {user}: {message}'
             log(fulltiktokmessage)
             await update_chat(user, message, 'tiktokIdent')
-            chan = TwitchBot.get_channel("hubalubalu")
+            chan = twitchBot.get_channel("hubalubalu")
             loop = asyncio.get_event_loop()
             loop.create_task(chan.send(f'[TikTok] {user}: {message}'))
 
@@ -325,9 +325,9 @@ async def main():
             # We are logged in and ready to chat and use commands...
             print(f"Logged in as | {self.nick}")
             print(f"User id is | {self.user_id}")
-            channel = TwitchBot.get_channel('Hubalubalu')
+            channel = twitchBot.get_channel('Hubalubalu')
             for channel in channel_list:
-                c = TwitchBot.get_channel(channel)
+                c = twitchBot.get_channel(channel)
                 await c.send(f'parknbot v0.7DEV connected to {c}!')
             print('parknBot v0.7Dev loaded')
         async def event_channel_join_failure(self, channel: str):
@@ -546,19 +546,20 @@ async def main():
 
     
     
-    TwitchBot = Bot()
-    await TwitchBot.__ainit__()
+    twitchBot = Bot()
+    discordBot = DiscordBot()
+    await twitchBot.__ainit__()
     
     @esbot.event()
     async def event_eventsub_notification_stream_start(payload: eventsub.StreamOnlineData) -> None:
         print('Twitch Stream Started')
-        channel = TwitchBot.get_channel('hubalubalu')
+        channel = twitchBot.get_channel('hubalubalu')
         await channel.send(f'Hubalubalu is now streaming')
         await DiscordBot.sendTwitchLink()
     
     ## Init
 
-    await asyncio.gather(TwitchBot.start(), TikTokBot.check_loop(TikTokBot), DiscordBot.client.start(config.discordToken))
+    await asyncio.gather(twitchBot.start(), TikTokBot.check_loop(TikTokBot), discordBot.client.start(config.discordToken))
 asyncio.run(main())
 # bot.run() is blocking and will stop execution of any below code here until stopped or closed.
 
