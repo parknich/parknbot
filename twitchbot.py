@@ -213,9 +213,17 @@ async def main():
             channel = 'Hubalubalu'
             user = event.user.nickname
             message = event.comment
+            
             fulltiktokmessage = '[in "{channel}"] {user}: {message}'
             log(fulltiktokmessage)
-            await update_chat(user, message, 'tiktokIdent')
+            if (event.user.is_moderator) and (event.user.is_friend):
+                await update_chat(user, message, 'tiktokIdent', badges=['vip', 'moderator'])
+            elif (event.user.is_moderator) and (event.user.is_friend == False):
+                await update_chat(user, message, 'tiktokIdent', badges=['moderator'])
+            elif (event.user.is_moderator==False) and (event.user.is_friend==True):
+                await update_chat(user, message, 'tiktokIdent', badges=['vip'])
+            elif (event.user.is_moderator==False) and (event.user.is_friend == False):
+                await update_chat(user, message, 'tiktokIdent')
             chan = twitchBot.get_channel("hubalubalu")
             loop = asyncio.get_event_loop()
             loop.create_task(chan.send(f'[TikTok] {user}: {message}'))
