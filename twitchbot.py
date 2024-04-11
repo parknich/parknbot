@@ -549,14 +549,14 @@ async def main():
     
     twitchBot = Bot()
     discordBot = DiscordBot()
-    await twitchBot.__ainit__()
-    
-    @esbot.event()
-    async def event_eventsub_notification_stream_start(payload: eventsub.StreamOnlineData) -> None:
-        print('Twitch Stream Started')
-        channel = twitchBot.get_channel('hubalubalu')
-        await channel.send(f'Hubalubalu is now streaming')
-        await DiscordBot.sendTwitchLink()
+    #await twitchBot.__ainit__()
+    #
+    #@esbot.event()
+    #async def event_eventsub_notification_stream_start(payload: eventsub.StreamOnlineData) -> None:
+    #    print('Twitch Stream Started')
+    #    channel = twitchBot.get_channel('hubalubalu')
+    #    await channel.send(f'Hubalubalu is now streaming')
+    #    await DiscordBot.sendTwitchLink()
     
     ## Init
 

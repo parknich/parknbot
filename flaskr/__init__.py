@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, Response, request
+from flask import Flask, Response, jsonify, request, send_file
 from flask_migrate import Migrate
 import requests
 from . import db
@@ -44,6 +44,7 @@ def create_app(test_config=None):
             excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
             headers = [(name, value) for (name, value) in     resp.raw.headers.items() if name.lower() not in excluded_headers]
             response = Response(resp.content, resp.status_code, headers)
+            
         return response
     app.register_blueprint(auth.bp)
     app.register_blueprint(dash.bp)
