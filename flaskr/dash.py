@@ -81,6 +81,7 @@ def responses():
 def chat():
     global chatList
     if request.method == 'POST':
+        print(request.json.get('auth', []))
         if request.json.get('auth', []) == config.access_token:   
             chatList = request.json.get('chat', [])
         else:
