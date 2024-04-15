@@ -6,6 +6,7 @@ from werkzeug.exceptions import abort
 from flaskr.auth import login_required
 from flaskr.db import get_db
 import json
+import lib.config as config
 bp = Blueprint('queue', __name__)
 
 # Initialize a global variable to store chatListUser data
@@ -59,6 +60,7 @@ def responses():
         # Assuming the data is sent as a JSON array in the request
         response1 = request.json.get('response', [])
         print(response1)
+        
 
         # Update the global variable with the received data
         
@@ -79,7 +81,11 @@ def responses():
 def chat():
     global chatList
     if request.method == 'POST':
-        chatList = request.json.get('chat', [])
+        if request.json.get('auth', []) == config.access_token:   
+            chatList = request.json.get('chat', [])
+        else:
+            return 
+        
 
     
     if request.method == 'GET' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':

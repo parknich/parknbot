@@ -1,4 +1,5 @@
 lib/config.py
+flaskr/lib/config.py
 tests/
 __pycache__/
 chat.log

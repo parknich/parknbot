@@ -75,7 +75,9 @@ async def update_chat(user, content, platform, color='', badges=dict()):
         "moderator": "modBadgeIdent",
         "subscriber": "subBadgeIdent",
         "glhf-pledge": "glhfBadgeIdent",
-        "vip": "vipBadgeIdent"
+        "vip": "vipBadgeIdent",
+        "tiktokFriend": "tiktokFriendBadgeIdent",
+        "tiktokModerator": "tiktokModBadgeIdent"
     }    
     
     # Check if user already has a saved color or if color is provided by Twitch API
@@ -109,7 +111,7 @@ async def update_chat(user, content, platform, color='', badges=dict()):
     
     # Send chat message to server
     endpoint = 'https://parknbot.xyz:443/dash/obs/chat'
-    payload = {'chat': chat}
+    payload = {'chat': chat, 'token': config.access_token}
     try:
         response = requests.post(endpoint, json=payload)
         response.raise_for_status()
