@@ -24,11 +24,11 @@ chat = list()
 # Create the twitch client
 channel_list = ['hubalubalu', 'parknich']
 
-esbot = commands.Bot.from_client_credentials(client_id=config.clientid,
-                                         client_secret=config.clientsecret)
-esclient = eventsub.EventSubClient(esbot,
-                                   webhook_secret=config.webhookSecret,
-                                   callback_route='https://parknbot.xyz/twitch-callback')
+#esbot = commands.Bot.from_client_credentials(client_id=config.clientid,
+#                                         client_secret=config.clientsecret)
+#esclient = eventsub.EventSubClient(esbot,
+#                                   webhook_secret=config.webhookSecret,
+#                                   callback_route='https://parknbot.xyz/twitch-callback')
 
 
 def iterateFile(file):
