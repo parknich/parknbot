@@ -85,7 +85,7 @@ def chat():
         if request.json.get('auth', []) == config.access_token:   
             chatList = request.json.get('chat', [])
         else:
-            return 
+            return "Invalid Auth Token"
         
 
     
